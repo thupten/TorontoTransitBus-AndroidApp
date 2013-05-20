@@ -25,7 +25,7 @@
     <ignored path="TorontoTransitBus.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369072269521" ignored="false" />
-    <file path="/TheContentProvider.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369087717107" ignored="false" />
+    <file path="/TheContentProvider.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369087919258" ignored="false" />
     <file path="/Constants.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369076557232" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,13 +86,13 @@
     <favorites_list name="TorontoTransitBus" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5222724">
+    <splitter split-orientation="horizontal" split-proportion="0.5435765">
       <split-first>
         <leaf>
           <file leaf-file-name="RouteDetailActivity.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
+                <state line="73" column="37" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -101,7 +101,7 @@
           <file leaf-file-name="RoutesFragment.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
+                <state line="65" column="5" selection-start="2285" selection-end="2285" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -110,7 +110,7 @@
           <file leaf-file-name="DatabaseUpdatingService.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="160" column="16" selection-start="6271" selection-end="6271" vertical-scroll-proportion="0.0">
+                <state line="160" column="16" selection-start="6135" selection-end="6135" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -119,19 +119,10 @@
           <file leaf-file-name="TheContentProvider.java" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="111" column="0" selection-start="4814" selection-end="4814" vertical-scroll-proportion="0.59534883">
+                <state line="110" column="8" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.61860466">
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -143,7 +134,7 @@
           <file leaf-file-name="RouteContentProvider.java" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="55" column="45" selection-start="1751" selection-end="1751" vertical-scroll-proportion="-0.18255813">
+                <state line="24" column="28" selection-start="794" selection-end="794" vertical-scroll-proportion="0.25697675">
                   <folding />
                 </state>
               </provider>
@@ -164,6 +155,7 @@
         <option value="$PROJECT_DIR$/res/layout/activity_route_detail.xml" />
         <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java" />
         <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java" />
+        <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/C.java" />
         <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java" />
       </list>
     </option>
@@ -465,15 +457,15 @@
       <workItem from="1369072643980" duration="53000" />
       <workItem from="1369072710027" duration="129000" />
       <workItem from="1369072852612" duration="5437000" />
-      <workItem from="1369084251650" duration="3094000" />
+      <workItem from="1369084251650" duration="3281000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9255000" />
+    <option name="totallyTimeSpent" value="9442000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -587,7 +579,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/C.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
           <folding />
@@ -639,42 +631,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
+        <state line="73" column="37" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="16" selection-start="6271" selection-end="6271" vertical-scroll-proportion="0.0">
+        <state line="160" column="16" selection-start="6135" selection-end="6135" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
+        <state line="65" column="5" selection-start="2285" selection-end="2285" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="45" selection-start="1751" selection-end="1751" vertical-scroll-proportion="-0.18255813">
+        <state line="24" column="28" selection-start="794" selection-end="794" vertical-scroll-proportion="0.25697675">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/C.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="14" selection-start="82" selection-end="82" vertical-scroll-proportion="0.07906977">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="0" selection-start="4814" selection-end="4814" vertical-scroll-proportion="0.59534883">
+        <state line="110" column="8" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.61860466">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

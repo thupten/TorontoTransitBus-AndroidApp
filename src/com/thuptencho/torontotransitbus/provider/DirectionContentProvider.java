@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.thuptencho.torontotransitbus.Constants;
+import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.models.Direction;
 
 public class DirectionContentProvider extends ContentProvider {
@@ -20,15 +20,15 @@ public class DirectionContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(Constants.AUTHORITY_DIRECTION, "directions", DIRECTIONS);
+		uriMatcher.addURI(C.AUTHORITY_DIRECTION, "directions", DIRECTIONS);
 		uriMatcher
-				.addURI(Constants.AUTHORITY_DIRECTION, "directions/#", DIRECTION_SINGLE);
+				.addURI(C.AUTHORITY_DIRECTION, "directions/#", DIRECTION_SINGLE);
 	}
 
 	@Override
 	public boolean onCreate() {
 		mySqLiteOpenHelper = new MySQLiteOpenHelper(getContext(),
-				Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+				C.DATABASE_NAME, null, C.DATABASE_VERSION);
 		if (mySqLiteOpenHelper == null)
 			return false;
 
@@ -51,7 +51,7 @@ public class DirectionContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
-		long id = db.insert(Constants.TABLE_DIRECTIONS, null, values);
+		long id = db.insert(C.TABLE_DIRECTIONS, null, values);
 		if (id != -1) {
 			Uri insertedIdUri = ContentUris.withAppendedId(uri, id);
 			getContext().getContentResolver().notifyChange(insertedIdUri, null);
@@ -65,14 +65,14 @@ public class DirectionContentProvider extends ContentProvider {
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
 		switch (uriMatcher.match(uri)) {
 		case DIRECTIONS:
-			return db.delete(Constants.TABLE_DIRECTIONS, selection,
+			return db.delete(C.TABLE_DIRECTIONS, selection,
 					selectionArgs);
 
 		case DIRECTION_SINGLE:
 			String id = uri.getPathSegments().get(1);
 			selection = selection + " AND (" + Direction.KEY_ID + "=" + id
 					+ ")";
-			return db.delete(Constants.TABLE_DIRECTIONS, selection,
+			return db.delete(C.TABLE_DIRECTIONS, selection,
 					selectionArgs);
 		}
 		return 0;
@@ -85,13 +85,13 @@ public class DirectionContentProvider extends ContentProvider {
 		int rowsAffected = 0;
 		switch (uriMatcher.match(uri)) {
 		case DIRECTIONS:
-			rowsAffected = db.update(Constants.TABLE_DIRECTIONS, values,
+			rowsAffected = db.update(C.TABLE_DIRECTIONS, values,
 					selection, selectionArgs);
 			break;
 		case DIRECTION_SINGLE:
 			String id = uri.getPathSegments().get(1);
 			selection = selection + " AND(" + Direction.KEY_ID + "=" + id + ")";
-			rowsAffected = db.update(Constants.TABLE_DIRECTIONS, values,
+			rowsAffected = db.update(C.TABLE_DIRECTIONS, values,
 					selection, selectionArgs);
 			break;
 		}
@@ -109,7 +109,7 @@ public class DirectionContentProvider extends ContentProvider {
 		Cursor cursor = null;
 		switch (uriMatcher.match(uri)) {
 		case (DIRECTIONS):
-			cursor = db.query(Constants.TABLE_DIRECTIONS, projection,
+			cursor = db.query(C.TABLE_DIRECTIONS, projection,
 					selection, selectionArgs, null, null, null);
 			if (cursor.getCount() > 0) {
 				getContext().getContentResolver().notifyChange(uri, null);
@@ -119,7 +119,7 @@ public class DirectionContentProvider extends ContentProvider {
 			String rowId = uri.getPathSegments().get(1);
 			selection = selection + " AND (" + Direction.KEY_ID + "=" + rowId
 					+ ")";
-			cursor = db.query(Constants.TABLE_DIRECTIONS, projection,
+			cursor = db.query(C.TABLE_DIRECTIONS, projection,
 					selection, selectionArgs, null, null, sortOrder);
 			if (cursor.getCount() > 0) {
 				getContext().getContentResolver().notifyChange(uri, null);

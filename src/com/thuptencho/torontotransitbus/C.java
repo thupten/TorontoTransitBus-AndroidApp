@@ -2,7 +2,7 @@ package com.thuptencho.torontotransitbus;
 
 import android.net.Uri;
 
-public class Constants {
+public class C {
 	public static final String DATABASE_NAME = "com.thuptencho.torontotransitbus.db";
 	public static final int DATABASE_VERSION = 5;
 	public static final String TABLE_ROUTES = "routes";
@@ -27,11 +27,11 @@ public class Constants {
 	public static final Uri CONTENT_URI_BASE_PATH = Uri.parse("content://" + AUTHORITY_PATH);
 	public static final Uri CONTENT_URI_BASE_POINT = Uri.parse("content://" + AUTHORITY_POINT);*/
 
-	public static final Uri CONTENT_URI_ROUTE = Uri.withAppendedPath(Constants.CONTENT_URI_BASE, "routes");
-	public static final Uri CONTENT_URI_DIRECTION = Uri.withAppendedPath(Constants.CONTENT_URI_BASE, "directions");
-	public static final Uri CONTENT_URI_STOP = Uri.withAppendedPath(Constants.CONTENT_URI_BASE, "stops");
-	public static final Uri CONTENT_URI_POINT = Uri.withAppendedPath(Constants.CONTENT_URI_BASE, "points");
-	public static final Uri CONTENT_URI_PATH = Uri.withAppendedPath(Constants.CONTENT_URI_BASE, "paths");
+	public static final Uri CONTENT_URI_ROUTE = Uri.withAppendedPath(C.CONTENT_URI_BASE, "routes");
+	public static final Uri CONTENT_URI_DIRECTION = Uri.withAppendedPath(C.CONTENT_URI_BASE, "directions");
+	public static final Uri CONTENT_URI_STOP = Uri.withAppendedPath(C.CONTENT_URI_BASE, "stops");
+	public static final Uri CONTENT_URI_POINT = Uri.withAppendedPath(C.CONTENT_URI_BASE, "points");
+	public static final Uri CONTENT_URI_PATH = Uri.withAppendedPath(C.CONTENT_URI_BASE, "paths");
 
 	public static final String BROADCAST_ROUTE_LIST_UPDATED = "com.thuptencho.torontotransitbus.route_list_updated_broadcast";
 	public static final String BROADCAST_ROUTE_DETAIL_UPDATED = "com.thuptencho.torontotransitbus.route_detail_updated_broadcast";

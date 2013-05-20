@@ -3,6 +3,7 @@ package com.thuptencho.torontotransitbus.backgroundservice;
 import java.io.IOException;
 import java.util.List;
 
+import com.thuptencho.torontotransitbus.C;
 import org.apache.http.client.ClientProtocolException;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,7 +16,6 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.thuptencho.torontotransitbus.Constants;
 import com.thuptencho.torontotransitbus.models.Direction;
 import com.thuptencho.torontotransitbus.models.Pathz;
 import com.thuptencho.torontotransitbus.models.Pointz;
@@ -61,9 +61,9 @@ public class DatabaseUpdatingService extends IntentService {
 				for (Route r : routes) {
 					String[] rowValues = new String[] { r.getTag(), r.getTitle(), r.getAgency__Tag() };
 					String conditiona = colNames[0] + "='" + rowValues[0] + "'";
-					saveToDB(colNames, rowValues, conditiona, Constants.TABLE_ROUTES, Constants.CONTENT_URI_ROUTE);
+					saveToDB(colNames, rowValues, conditiona, C.TABLE_ROUTES, C.CONTENT_URI_ROUTE);
 				}
-				Intent i = new Intent(Constants.BROADCAST_ROUTE_LIST_UPDATED);
+				Intent i = new Intent(C.BROADCAST_ROUTE_LIST_UPDATED);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 			}
 		}
@@ -81,8 +81,8 @@ public class DatabaseUpdatingService extends IntentService {
 					route.getLonMax(), route.getLonMin() };
 
 			String conditionb = columnNamesRoutes[0] + "='" + rowValuesRoutes[0] + "'";
-			saveToDB(columnNamesRoutes, rowValuesRoutes, conditionb, Constants.TABLE_ROUTES,
-					Constants.CONTENT_URI_ROUTE);
+			saveToDB(columnNamesRoutes, rowValuesRoutes, conditionb, C.TABLE_ROUTES,
+					C.CONTENT_URI_ROUTE);
 			/* save route's Stop */
 			List<Stop> stops = route.getStops();
 			String[] colNamesStops, rowValuesStops;
@@ -93,8 +93,8 @@ public class DatabaseUpdatingService extends IntentService {
 					rowValuesStops = new String[] { s.getTag(), s.getLat(), s.getLon(), s.getStopId(), s.getTitle(),
 							route.getTag() };
 					String conditionc = colNamesStops[0] + "='" + rowValuesStops[0] + "'";
-					saveToDB(colNamesStops, rowValuesStops, conditionc, Constants.TABLE_STOPS,
-							Constants.CONTENT_URI_STOP);
+					saveToDB(colNamesStops, rowValuesStops, conditionc, C.TABLE_STOPS,
+							C.CONTENT_URI_STOP);
 				}
 			}
 
@@ -106,14 +106,14 @@ public class DatabaseUpdatingService extends IntentService {
 				String[] rowValuesDirections = new String[] { d.getTag(), d.getTitle(), d.getName(), d.getUseForUI(),
 						route.getTag() };
 				String conditionz = columnNamesDirections[0] + "='" + rowValuesDirections[0] + "'";
-				saveToDB(columnNamesDirections, rowValuesDirections, conditionz, Constants.TABLE_DIRECTIONS,
-						Constants.CONTENT_URI_DIRECTION);
+				saveToDB(columnNamesDirections, rowValuesDirections, conditionz, C.TABLE_DIRECTIONS,
+						C.CONTENT_URI_DIRECTION);
 				List<Stop> stopsInDirection = d.getStops();
 				for (Stop sd : stopsInDirection) {
 					String conditionx = Stop.KEY_TAG + "='" + sd.getTag() + "'";
 					saveToDB(new String[] { Stop.KEY_TAG, Stop.KEY_DIRECTION__TAG },
-							new String[] { sd.getTag(), d.getTag() }, conditionx, Constants.TABLE_STOPS,
-							Constants.CONTENT_URI_STOP);
+							new String[] { sd.getTag(), d.getTag() }, conditionx, C.TABLE_STOPS,
+							C.CONTENT_URI_STOP);
 				}
 
 			}
@@ -122,17 +122,17 @@ public class DatabaseUpdatingService extends IntentService {
 			for (Pathz pa : paths) {
 				String conditionxe = Pathz.KEY_ROUTE__TAG + "='" + route.getTag() + "'";
 				int pathid = saveToDB(new String[] { Pathz.KEY_ROUTE__TAG }, new String[] { route.getTag() },
-						conditionxe, Constants.TABLE_PATHS, Constants.CONTENT_URI_PATH);
+						conditionxe, C.TABLE_PATHS, C.CONTENT_URI_PATH);
 				for (Pointz po : pa.getPoints()) {
 					// lat,lon,path__id
 					String conditionee = Pointz.KEY_PATHS__ID + "=" + pathid;
 					saveToDB(new String[] { Pointz.KEY_LAT, Pointz.KEY_LON, Pointz.KEY_PATHS__ID },
 							new String[] { po.getLat(), po.getLon(), String.valueOf(pathid) },
-							conditionee, Constants.TABLE_POINTS,
-							Constants.CONTENT_URI_POINT);
+							conditionee, C.TABLE_POINTS,
+							C.CONTENT_URI_POINT);
 				}
 			}
-			Intent i = new Intent(Constants.BROADCAST_ROUTE_DETAIL_UPDATED);
+			Intent i = new Intent(C.BROADCAST_ROUTE_DETAIL_UPDATED);
 			i.putExtra(Route.KEY_TAG, route.getTag());
 			LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 

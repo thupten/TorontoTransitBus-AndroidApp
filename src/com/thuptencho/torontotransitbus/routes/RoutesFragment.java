@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.thuptencho.torontotransitbus.Constants;
+import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.R;
 import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
 import com.thuptencho.torontotransitbus.backgroundservice.RestClient;
@@ -31,7 +31,7 @@ public class RoutesFragment extends ListFragment implements
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Uri uri = Constants.CONTENT_URI_ROUTE;
+			Uri uri = C.CONTENT_URI_ROUTE;
 			String[] projection = new String[] { Route.KEY_ID, Route.KEY_TITLE };
 			Cursor cursor = context.getContentResolver().query(uri, projection,
 					null, null, null);
@@ -52,7 +52,7 @@ public class RoutesFragment extends ListFragment implements
 		getActivity().getSupportLoaderManager().initLoader(1, null, this);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
 				mMessageReceiver,
-				new IntentFilter(Constants.BROADCAST_ROUTE_LIST_UPDATED));
+				new IntentFilter(C.BROADCAST_ROUTE_LIST_UPDATED));
 	}
 
 	@Override
@@ -67,11 +67,11 @@ public class RoutesFragment extends ListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle arg) {
-		Loader<Cursor> loader = new CursorLoader(getActivity(), Constants.CONTENT_URI_ROUTE,
+		Loader<Cursor> loader = new CursorLoader(getActivity(), C.CONTENT_URI_ROUTE,
 				new String[] { Route.KEY_ID, Route.KEY_TITLE }, null, null,
 				null);
 		Intent intent = new Intent(getActivity(), DatabaseUpdatingService.class);
-		intent.putExtra(Constants.URL_STRING_KEY, RestClient.getRestUrlForRoutelist());
+		intent.putExtra(C.URL_STRING_KEY, RestClient.getRestUrlForRoutelist());
 		getActivity().startService(intent);
 		return loader;
 

@@ -4,9 +4,8 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import com.thuptencho.torontotransitbus.Constants;
+import com.thuptencho.torontotransitbus.C;
 
 /**
  * Created by thupten on 5/20/13.
@@ -25,23 +24,23 @@ public class TheContentProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(Constants.AUTHORITY, "routes", ROUTES);
-        uriMatcher.addURI(Constants.AUTHORITY, "routes/#", ROUTES_SINGLE);
-        uriMatcher.addURI(Constants.AUTHORITY, "directions", DIRECTIONS);
-        uriMatcher.addURI(Constants.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
-        uriMatcher.addURI(Constants.AUTHORITY, "stops", STOPS);
-        uriMatcher.addURI(Constants.AUTHORITY, "stops/#", STOPS_SINGLE);
-        uriMatcher.addURI(Constants.AUTHORITY, "paths", PATHS);
-        uriMatcher.addURI(Constants.AUTHORITY, "paths/#", PATHS_SINGLE);
-        uriMatcher.addURI(Constants.AUTHORITY, "points", POINTS);
-        uriMatcher.addURI(Constants.AUTHORITY, "points/#", POINTS_SINGLE);
-        uriMatcher.addURI(Constants.AUTHORITY, "points", SCHEDULES);
-        uriMatcher.addURI(Constants.AUTHORITY, "points/#", SCHEDULES_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "routes", ROUTES);
+        uriMatcher.addURI(C.AUTHORITY, "routes/#", ROUTES_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "directions", DIRECTIONS);
+        uriMatcher.addURI(C.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "stops", STOPS);
+        uriMatcher.addURI(C.AUTHORITY, "stops/#", STOPS_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "paths", PATHS);
+        uriMatcher.addURI(C.AUTHORITY, "paths/#", PATHS_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "points", POINTS);
+        uriMatcher.addURI(C.AUTHORITY, "points/#", POINTS_SINGLE);
+        uriMatcher.addURI(C.AUTHORITY, "points", SCHEDULES);
+        uriMatcher.addURI(C.AUTHORITY, "points/#", SCHEDULES_SINGLE);
     }
 
     @Override
     public boolean onCreate() {
-        mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+        mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), C.DATABASE_NAME, null, C.DATABASE_VERSION);
         if (mySqliteOpenHelper == null) {
             return false;
         }
@@ -109,6 +108,7 @@ public class TheContentProvider extends ContentProvider {
     private Cursor queryRoutes(Uri uri, String[] strings, String s, String[] strings2, String s2) {
         Cursor c = null;
         //todo
+        
 
         return c;
     }

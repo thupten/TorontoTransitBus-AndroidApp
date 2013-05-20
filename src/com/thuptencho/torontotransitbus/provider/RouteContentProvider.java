@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
-import com.thuptencho.torontotransitbus.Constants;
+import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.models.Route;
 
 public class RouteContentProvider extends ContentProvider {
@@ -22,14 +22,14 @@ public class RouteContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(Constants.AUTHORITY_ROUTE, "routes", ROUTES);
-		uriMatcher.addURI(Constants.AUTHORITY_ROUTE, "routes/#", ROUTE_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY_ROUTE, "routes", ROUTES);
+		uriMatcher.addURI(C.AUTHORITY_ROUTE, "routes/#", ROUTE_SINGLE);
 	}
 
 	@Override
 	public boolean onCreate() {
 		mySqLiteOpenHelper = new MySQLiteOpenHelper(getContext(),
-				Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+				C.DATABASE_NAME, null, C.DATABASE_VERSION);
 		if (mySqLiteOpenHelper == null)
 			return false;
 
@@ -52,8 +52,8 @@ public class RouteContentProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 		Log.d("contentvalues", values.toString());
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
-		long insertedId = db.insert(Constants.TABLE_ROUTES, null, values);
-		Uri insertedUri = ContentUris.withAppendedId(Constants.CONTENT_URI_ROUTE, insertedId);
+		long insertedId = db.insert(C.TABLE_ROUTES, null, values);
+		Uri insertedUri = ContentUris.withAppendedId(C.CONTENT_URI_ROUTE, insertedId);
 		return insertedUri;
 	}
 
@@ -67,7 +67,7 @@ public class RouteContentProvider extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
-		int count = db.update(Constants.TABLE_ROUTES, values, selection, selectionArgs);
+		int count = db.update(C.TABLE_ROUTES, values, selection, selectionArgs);
 		return count;
 	}
 
@@ -83,7 +83,7 @@ public class RouteContentProvider extends ContentProvider {
 		String having = null;
 		switch (uriMatcher.match(uri)) {
 		case (ROUTES):
-			inTables = Constants.TABLE_ROUTES;
+			inTables = C.TABLE_ROUTES;
 			qb.setTables(inTables);
 
 			cursor = qb.query(db, projection, selection, selectionArgs,
@@ -94,7 +94,7 @@ public class RouteContentProvider extends ContentProvider {
 			return cursor;
 		case (ROUTE_SINGLE):
 			int rowId = Integer.parseInt(uri.getPathSegments().get(1)) + 1;//add one because databas id start with 1
-			inTables = Constants.TABLE_ROUTES;
+			inTables = C.TABLE_ROUTES;
 			qb.setTables(inTables);
 			qb.appendWhere(Route.KEY_ID + "=" + rowId);
 			

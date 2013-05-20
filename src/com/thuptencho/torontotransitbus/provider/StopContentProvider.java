@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.thuptencho.torontotransitbus.Constants;
+import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.models.Stop;
 
 public class StopContentProvider extends ContentProvider {
@@ -20,15 +20,15 @@ public class StopContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(Constants.AUTHORITY_STOP, "stops", STOPS);
+		uriMatcher.addURI(C.AUTHORITY_STOP, "stops", STOPS);
 		uriMatcher
-				.addURI(Constants.AUTHORITY_STOP, "stops/#", STOP_SINGLE);
+				.addURI(C.AUTHORITY_STOP, "stops/#", STOP_SINGLE);
 	}
 
 	@Override
 	public boolean onCreate() {
 		mySqLiteOpenHelper = new MySQLiteOpenHelper(getContext(),
-				Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+				C.DATABASE_NAME, null, C.DATABASE_VERSION);
 		if (mySqLiteOpenHelper == null)
 			return false;
 
@@ -51,7 +51,7 @@ public class StopContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
-		long id = db.insert(Constants.TABLE_STOPS, null, values);
+		long id = db.insert(C.TABLE_STOPS, null, values);
 		if (id != -1) {
 			Uri insertedIdUri = ContentUris.withAppendedId(uri, id);
 			getContext().getContentResolver().notifyChange(insertedIdUri, null);
@@ -65,14 +65,14 @@ public class StopContentProvider extends ContentProvider {
 		SQLiteDatabase db = mySqLiteOpenHelper.getWritableDatabase();
 		switch (uriMatcher.match(uri)) {
 		case STOPS:
-			return db.delete(Constants.TABLE_STOPS, selection,
+			return db.delete(C.TABLE_STOPS, selection,
 					selectionArgs);
 
 		case STOP_SINGLE:
 			String id = uri.getPathSegments().get(1);
 			selection = selection + " AND (" + Stop.KEY_ID + "=" + id
 					+ ")";
-			return db.delete(Constants.TABLE_STOPS, selection,
+			return db.delete(C.TABLE_STOPS, selection,
 					selectionArgs);
 		}
 		return 0;
@@ -85,13 +85,13 @@ public class StopContentProvider extends ContentProvider {
 		int rowsAffected = 0;
 		switch (uriMatcher.match(uri)) {
 		case STOPS:
-			rowsAffected = db.update(Constants.TABLE_STOPS, values,
+			rowsAffected = db.update(C.TABLE_STOPS, values,
 					selection, selectionArgs);
 			break;
 		case STOP_SINGLE:
 			String id = uri.getPathSegments().get(1);
 			selection = selection + " AND(" + Stop.KEY_ID + "=" + id + ")";
-			rowsAffected = db.update(Constants.TABLE_STOPS, values,
+			rowsAffected = db.update(C.TABLE_STOPS, values,
 					selection, selectionArgs);
 			break;
 		}
@@ -108,7 +108,7 @@ public class StopContentProvider extends ContentProvider {
 		Cursor cursor = null;
 		switch (uriMatcher.match(uri)) {
 		case (STOPS):
-			cursor = db.query(Constants.TABLE_STOPS, projection,
+			cursor = db.query(C.TABLE_STOPS, projection,
 					selection, selectionArgs, null, null, null);
 			if (cursor.getCount() > 0) {
 				getContext().getContentResolver().notifyChange(uri, null);
@@ -118,7 +118,7 @@ public class StopContentProvider extends ContentProvider {
 			String rowId = uri.getPathSegments().get(1);
 			selection = selection + " AND (" + Stop.KEY_ID + "=" + rowId
 					+ ")";
-			cursor = db.query(Constants.TABLE_STOPS, projection,
+			cursor = db.query(C.TABLE_STOPS, projection,
 					selection, selectionArgs, null, null, sortOrder);
 			if (cursor.getCount() > 0) {
 				getContext().getContentResolver().notifyChange(uri, null);
