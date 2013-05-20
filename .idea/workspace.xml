@@ -25,7 +25,8 @@
     <ignored path="TorontoTransitBus.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369072269521" ignored="false" />
-    <file path="/TheContentProvider.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369075692367" ignored="false" />
+    <file path="/TheContentProvider.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369087717107" ignored="false" />
+    <file path="/Constants.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369076557232" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,48 +86,72 @@
     <favorites_list name="TorontoTransitBus" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="RouteDetailActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoutesFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DatabaseUpdatingService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="160" column="16" selection-start="6271" selection-end="6271" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TheContentProvider.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="8" selection-start="477" selection-end="477" vertical-scroll-proportion="0.4729521">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5222724">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="RouteDetailActivity.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="RoutesFragment.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DatabaseUpdatingService.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="160" column="16" selection-start="6271" selection-end="6271" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="TheContentProvider.java" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="111" column="0" selection-start="4814" selection-end="4814" vertical-scroll-proportion="0.59534883">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="RouteContentProvider.java" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="55" column="45" selection-start="1751" selection-end="1751" vertical-scroll-proportion="-0.18255813">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -137,6 +162,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/res/layout/activity_route_detail.xml" />
+        <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java" />
+        <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java" />
         <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java" />
       </list>
     </option>
@@ -174,6 +201,34 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com.thuptencho.torontotransitbus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -234,26 +289,29 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="project.structure.proportion" value="0.0" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="004a768889929140" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="nexus4" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.TorontoTransitBus">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -406,39 +464,41 @@
       <workItem from="1369072082979" duration="542000" />
       <workItem from="1369072643980" duration="53000" />
       <workItem from="1369072710027" duration="129000" />
-      <workItem from="1369072852612" duration="2347000" />
+      <workItem from="1369072852612" duration="5437000" />
+      <workItem from="1369084251650" duration="3094000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3071000" />
+    <option name="totallyTimeSpent" value="9255000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297062" sideWeight="0.6704417" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297062" sideWeight="0.6704417" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35418934" sideWeight="0.6704417" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17791077" sideWeight="0.6704417" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17182498" sideWeight="0.74860954" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25139043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17342582" sideWeight="0.7741935" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25652668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.22580644" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="92" y="92" width="1736" height="856" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297062" sideWeight="0.6704417" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297062" sideWeight="0.6704417" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35418934" sideWeight="0.6704417" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -504,59 +564,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="35" selection-start="156" selection-end="156" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/activity_route_detail.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="39" selection-start="427" selection-end="427" vertical-scroll-proportion="0.03469388">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="43" selection-start="1265" selection-end="1265" vertical-scroll-proportion="-2.4754357">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
@@ -573,13 +580,194 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="8" selection-start="477" selection-end="477" vertical-scroll-proportion="0.4729521">
+        <state line="47" column="54" selection-start="1850" selection-end="1850" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="58" selection-start="1304" selection-end="1304" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="35" selection-start="156" selection-end="156" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_route_detail.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="39" selection-start="427" selection-end="427" vertical-scroll-proportion="0.03469388" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="43" selection-start="1265" selection-end="1265" vertical-scroll-proportion="-2.4754357">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="37" selection-start="2822" selection-end="2822" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="160" column="16" selection-start="6271" selection-end="6271" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="5" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/RouteContentProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="45" selection-start="1751" selection-end="1751" vertical-scroll-proportion="-0.18255813">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="0" selection-start="4814" selection-end="4814" vertical-scroll-proportion="0.59534883">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android (TorontoTransitBus)|Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>Android 4.2.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android|TorontoTransitBus</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>libs</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
 

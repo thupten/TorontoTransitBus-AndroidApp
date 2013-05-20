@@ -41,7 +41,7 @@ public class RouteContentProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		switch (uriMatcher.match(uri)) {
 		case ROUTES:
-			return "vnd.android.cursor.dir/vnd.torontotransitbus.routes";
+			return "vnd.android.cursor.dir/vnd.thuptencho.torontotransitbus.routes";
 		default:
 			throw new IllegalArgumentException("Unsupported URI:" + uri);
 		}
