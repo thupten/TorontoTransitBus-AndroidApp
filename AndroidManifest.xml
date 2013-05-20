@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.thuptencho.torontotransitbus"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="com.thuptencho.torontotransitbus.provider.RouteContentProvider"
+            android:authorities="@string/authority_route"
+            android:exported="false" />
+        <provider
+            android:name="com.thuptencho.torontotransitbus.provider.DirectionContentProvider"
+            android:authorities="@string/authority_direction"
+            android:exported="false" />
+        <provider
+            android:name="com.thuptencho.torontotransitbus.provider.StopContentProvider"
+            android:authorities="@string/authority_stop"
+            android:exported="false" />
+        <provider
+            android:name="com.thuptencho.torontotransitbus.provider.PathzContentProvider"
+            android:authorities="@string/authority_path"
+            android:exported="false" />
+        <provider
+            android:name="com.thuptencho.torontotransitbus.provider.PointzContentProvider"
+            android:authorities="@string/authority_point"
+            android:exported="false" />
+
+        <service
+            android:name="com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService"
+            android:label="@string/service_label" >
+        </service>
+
+        <activity
+            android:name="com.thuptencho.torontotransitbus.routes.RouteDetailActivity"
+            android:label="@string/title_activity_route_detail" >
+        </activity>
+    </application>
+
+</manifest>
