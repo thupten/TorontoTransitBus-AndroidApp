@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.R;
-import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
-import com.thuptencho.torontotransitbus.backgroundservice.RestClient;
 import com.thuptencho.torontotransitbus.models.Route;
 
 public class RoutesFragment extends ListFragment implements
@@ -52,7 +50,7 @@ public class RoutesFragment extends ListFragment implements
 		getActivity().getSupportLoaderManager().initLoader(1, null, this);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
 				mMessageReceiver,
-				new IntentFilter(C.BROADCAST_ROUTE_LIST_UPDATED));
+				new IntentFilter(C.BROADCAST_ROUTES_UPDATED_ACTION));
 	}
 
 	@Override
@@ -70,9 +68,6 @@ public class RoutesFragment extends ListFragment implements
 		Loader<Cursor> loader = new CursorLoader(getActivity(), C.CONTENT_URI_ROUTE,
 				new String[] { Route.KEY_ID, Route.KEY_TITLE }, null, null,
 				null);
-		Intent intent = new Intent(getActivity(), DatabaseUpdatingService.class);
-		intent.putExtra(C.URL_STRING_KEY, RestClient.getRestUrlForRoutelist());
-		getActivity().startService(intent);
 		return loader;
 
 	}

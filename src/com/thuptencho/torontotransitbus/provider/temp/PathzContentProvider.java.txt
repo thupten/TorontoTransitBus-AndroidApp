@@ -21,8 +21,8 @@ public class PathzContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(C.AUTHORITY_PATH, "paths", PATHS);
-		uriMatcher.addURI(C.AUTHORITY_PATH, "paths/#", PATH_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "paths", PATHS);
+		uriMatcher.addURI(C.AUTHORITY, "paths/#", PATH_SINGLE);
 	}
 
 	@Override

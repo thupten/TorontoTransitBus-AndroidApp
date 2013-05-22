@@ -22,8 +22,8 @@ public class PointzContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(C.AUTHORITY_POINT, "points", POINTS);
-		uriMatcher.addURI(C.AUTHORITY_POINT, "points/#", POINT_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "points", POINTS);
+		uriMatcher.addURI(C.AUTHORITY, "points/#", POINT_SINGLE);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Pathz {
 	public static final String KEY_ID = "_id";
-	public static final String KEY_POINTS = "points", KEY_ROUTE__TAG="route__tag";
+	public static final String KEY_ROUTE__TAG="route__tag";
 	public List<Pointz> points = new ArrayList<Pointz>();
 	private String route__tag;
 

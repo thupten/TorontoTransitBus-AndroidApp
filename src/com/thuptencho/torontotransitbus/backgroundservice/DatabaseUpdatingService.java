@@ -1,30 +1,58 @@
 package com.thuptencho.torontotransitbus.backgroundservice;
 
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.util.List;
 
-import com.thuptencho.torontotransitbus.C;
 import org.apache.http.client.ClientProtocolException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.IntentService;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.models.Direction;
 import com.thuptencho.torontotransitbus.models.Pathz;
 import com.thuptencho.torontotransitbus.models.Pointz;
 import com.thuptencho.torontotransitbus.models.Route;
 import com.thuptencho.torontotransitbus.models.Stop;
+import com.thuptencho.torontotransitbus.provider.MySQLiteOpenHelper;
 import com.thuptencho.torontotransitbus.utilities.LogCursor;
 
 /*Used by Content Providers*/
 public class DatabaseUpdatingService extends IntentService {
+
+	private static UriMatcher uriMatcher;
+
+	private static final int ROUTES = 10, ROUTES_SINGLE = 11, DIRECTIONS = 20, DIRECTIONS_SINGLE = 21, STOPS = 30,
+			STOPS_SINGLE = 31, PATHS = 40, PATHS_SINGLE = 41, POINTS = 50, POINTS_SINGLE = 51, SCHEDULES = 60,
+			SCHEDULES_SINGLE = 61;
+	private MySQLiteOpenHelper mySQLiteOpenHelper = null;
+
+	static {
+		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+		uriMatcher.addURI(C.AUTHORITY, "routes", ROUTES);
+		uriMatcher.addURI(C.AUTHORITY, "routes/#", ROUTES_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "directions", DIRECTIONS);
+		uriMatcher.addURI(C.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "stops", STOPS);
+		uriMatcher.addURI(C.AUTHORITY, "stops/#", STOPS_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "paths", PATHS);
+		uriMatcher.addURI(C.AUTHORITY, "paths/#", PATHS_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "points", POINTS);
+		uriMatcher.addURI(C.AUTHORITY, "points/#", POINTS_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "points", SCHEDULES);
+		uriMatcher.addURI(C.AUTHORITY, "points/#", SCHEDULES_SINGLE);
+	}
+
 	public DatabaseUpdatingService() {
 		super("DatabaseUpdatingService");
 	}
@@ -34,11 +62,22 @@ public class DatabaseUpdatingService extends IntentService {
 	}
 
 	@Override
+	public void onCreate() {
+		super.onCreate();
+		mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), C.DATABASE_NAME, null, C.DATABASE_VERSION);
+	}
+
+	@Override
 	protected void onHandleIntent(Intent intent) {
 		// Log.d("DatabaseUpdatingService", "onHandleIntent(Intent intent)");
 
 		try {
-			this.loadFromRestAndSaveToDb(intent.getStringExtra("urlString"));
+			String extraQuery = intent.getStringExtra("task");
+			if (extraQuery.equals("query")) {
+				String extraUri_string = intent.getStringExtra("uri_string");
+				this.loadFromRestAndSaveToDb(extraUri_string);
+			}
+
 		} catch (ClientProtocolException e) {
 
 			Log.e("onHandle", e.getLocalizedMessage());
@@ -48,159 +87,170 @@ public class DatabaseUpdatingService extends IntentService {
 		} catch (XmlPullParserException e) {
 
 			Log.e("onHandle", e.getLocalizedMessage());
+		} catch (SQLDataException e) {
+			Log.e("onHandle", e.getMessage());
+			;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
 
-	public void loadFromRestAndSaveToDb(String url) throws ClientProtocolException, IOException, XmlPullParserException {
-		// check url and find out which rest method it matches.
-		if (RestClient.isRestUrlForRoutelist(url)) {
+	public void loadFromRestAndSaveToDb(String uriString) throws Exception{
+		Uri uri = Uri.parse(uriString);
+		int match = uriMatcher.match(uri);
+		switch (match) {
+		case ROUTES:
 			List<Route> routes = RestClient.getRoutes();
-			String[] colNames = new String[] { Route.KEY_TAG, Route.KEY_TITLE, Route.KEY_AGENCY__TAG };
 			if (routes.size() > 0) {
+				ContentValues contentValues = new ContentValues();
 				for (Route r : routes) {
-					String[] rowValues = new String[] { r.getTag(), r.getTitle(), r.getAgency__Tag() };
-					String conditiona = colNames[0] + "='" + rowValues[0] + "'";
-					saveToDB(colNames, rowValues, conditiona, C.TABLE_ROUTES, C.CONTENT_URI_ROUTE);
+					contentValues.put(Route.KEY_TAG, r.getTag());
+					contentValues.put(Route.KEY_TITLE, r.getTitle());
+					contentValues.put(Route.KEY_AGENCY__TAG, r.getAgency__Tag());
+					saveToDB(contentValues, null, C.TABLE_ROUTES, SQLiteDatabase.CONFLICT_ABORT);
 				}
-				Intent i = new Intent(C.BROADCAST_ROUTE_LIST_UPDATED);
+				Intent i = new Intent(C.BROADCAST_ROUTES_UPDATED_ACTION);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 			}
-		}
+		case ROUTES_SINGLE:
+			// get the id
+			int selectedRouteId = Integer.valueOf(uri.getPathSegments().get(1));
+			Intent messageIntent = new Intent();
 
-		else if (RestClient.isRestUrlForRouteDetail(url)) {
-			/* save Route */
+			Cursor c = findFirstFromDb(new String[] { Route.KEY_TAG }, "_id=" + selectedRouteId, C.TABLE_ROUTES);
+			c.moveToFirst();
+			String routeTag = c.getString(0);
+
 			Route route = new Route();
-			route = RestClient.getRouteDetail(url);
-			String[] columnNamesRoutes = new String[] { Route.KEY_TAG, Route.KEY_TITLE, Route.KEY_SHORT_TITLE,
-					Route.KEY_COLOR, Route.KEY_OPPOSITE_COLOR, Route.KEY_LAT_MAX, Route.KEY_LAT_MIN, Route.KEY_LON_MAX,
-					Route.KEY_LON_MIN };
+			route = RestClient.getRouteDetail(routeTag);
 
-			String[] rowValuesRoutes = new String[] { route.getTag(), route.getTitle(), route.getShortTitle(),
-					route.getColor(), route.getOppositeColor(), route.getLatMax(), route.getLatMin(),
-					route.getLonMax(), route.getLonMin() };
+			ContentValues contentValuesRoute = new ContentValues();
+			contentValuesRoute.put(Route.KEY_TAG, route.getTag());
+			contentValuesRoute.put(Route.KEY_TITLE, route.getTitle());
+			contentValuesRoute.put(Route.KEY_SHORT_TITLE, route.getShortTitle());
+			contentValuesRoute.put(Route.KEY_COLOR, route.getColor());
+			contentValuesRoute.put(Route.KEY_OPPOSITE_COLOR, route.getOppositeColor());
+			contentValuesRoute.put(Route.KEY_LAT_MAX, route.getLatMax());
+			contentValuesRoute.put(Route.KEY_LAT_MIN, route.getLatMin());
+			contentValuesRoute.put(Route.KEY_LON_MAX, route.getLonMax());
+			contentValuesRoute.put(Route.KEY_LON_MIN, route.getLonMin());
 
-			String conditionb = columnNamesRoutes[0] + "='" + rowValuesRoutes[0] + "'";
-			saveToDB(columnNamesRoutes, rowValuesRoutes, conditionb, C.TABLE_ROUTES,
-					C.CONTENT_URI_ROUTE);
+			saveToDB(contentValuesRoute, null, C.TABLE_ROUTES, SQLiteDatabase.CONFLICT_REPLACE);
+
+			messageIntent = new Intent(C.BROADCAST_ROUTES_SINGLE_UPDATED_ACTION);
+			messageIntent.putExtra("route_tag", route.getTag());
+			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+
 			/* save route's Stop */
 			List<Stop> stops = route.getStops();
-			String[] colNamesStops, rowValuesStops;
 			if (stops.size() > 0) {
-				colNamesStops = new String[] { Stop.KEY_TAG, Stop.KEY_LAT, Stop.KEY_LON, Stop.KEY_STOPID,
-						Stop.KEY_TITLE, Stop.KEY_ROUTE__TAG };
 				for (Stop s : stops) {
-					rowValuesStops = new String[] { s.getTag(), s.getLat(), s.getLon(), s.getStopId(), s.getTitle(),
-							route.getTag() };
-					String conditionc = colNamesStops[0] + "='" + rowValuesStops[0] + "'";
-					saveToDB(colNamesStops, rowValuesStops, conditionc, C.TABLE_STOPS,
-							C.CONTENT_URI_STOP);
+					ContentValues contentValuesStop = new ContentValues();
+					contentValuesStop.put(Stop.KEY_TAG, s.getTag());
+					contentValuesStop.put(Stop.KEY_LAT, s.getLat());
+					contentValuesStop.put(Stop.KEY_LON, s.getLon());
+					contentValuesStop.put(Stop.KEY_STOPID, s.getStopId());
+					contentValuesStop.put(Stop.KEY_TITLE, s.getTitle());
+					contentValuesStop.put(Stop.KEY_TAG, route.getTag());
+					saveToDB(contentValuesStop, null, C.TABLE_STOPS, SQLiteDatabase.CONFLICT_NONE);
 				}
+				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
+				messageIntent.putExtra("route_tag", route.getTag());
+				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
 
 			/* save Direction and the Stops in the direction */
 			List<Direction> directions = route.getDirections();
+
 			for (Direction d : directions) {
-				String[] columnNamesDirections = new String[] { Direction.KEY_TAG, Direction.KEY_TITLE,
-						Direction.KEY_NAME, Direction.KEY_USEFORUI, Direction.KEY_ROUTE__TAG };
-				String[] rowValuesDirections = new String[] { d.getTag(), d.getTitle(), d.getName(), d.getUseForUI(),
-						route.getTag() };
-				String conditionz = columnNamesDirections[0] + "='" + rowValuesDirections[0] + "'";
-				saveToDB(columnNamesDirections, rowValuesDirections, conditionz, C.TABLE_DIRECTIONS,
-						C.CONTENT_URI_DIRECTION);
+				ContentValues contentValuesDirection = new ContentValues();
+				contentValuesDirection.put(Direction.KEY_TAG, d.getTag());
+				contentValuesDirection.put(Direction.KEY_TITLE, d.getTitle());
+				contentValuesDirection.put(Direction.KEY_NAME, d.getName());
+				contentValuesDirection.put(Direction.KEY_USEFORUI, d.getUseForUI());
+				contentValuesDirection.put(Direction.KEY_ROUTE__TAG, route.getTag());
+
+				saveToDB(contentValuesDirection, null, C.TABLE_DIRECTIONS, SQLiteDatabase.CONFLICT_REPLACE);
 				List<Stop> stopsInDirection = d.getStops();
+
 				for (Stop sd : stopsInDirection) {
+					ContentValues contentValuesStop = new ContentValues();
 					String conditionx = Stop.KEY_TAG + "='" + sd.getTag() + "'";
-					saveToDB(new String[] { Stop.KEY_TAG, Stop.KEY_DIRECTION__TAG },
-							new String[] { sd.getTag(), d.getTag() }, conditionx, C.TABLE_STOPS,
-							C.CONTENT_URI_STOP);
+					contentValuesStop.put(Stop.KEY_TAG, sd.getTag());
+					contentValuesStop.put(Stop.KEY_DIRECTION__TAG, d.getTag());
+					saveToDB(contentValuesStop, conditionx, C.TABLE_STOPS, SQLiteDatabase.CONFLICT_NONE);
 				}
+				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
+				messageIntent.putExtra("route_tag", route.getTag());
+				messageIntent.putExtra("direction_tag", d.getTag());
+				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 			}
+			messageIntent = new Intent(C.BROADCAST_DIRECTIONS_UPDATED_ACTION);
+			messageIntent.putExtra("route_tag", route.getTag());
+			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+
 			/* save path and points */
 			List<Pathz> paths = route.getPaths();
 			for (Pathz pa : paths) {
-				String conditionxe = Pathz.KEY_ROUTE__TAG + "='" + route.getTag() + "'";
-				int pathid = saveToDB(new String[] { Pathz.KEY_ROUTE__TAG }, new String[] { route.getTag() },
-						conditionxe, C.TABLE_PATHS, C.CONTENT_URI_PATH);
+				ContentValues contentValuesPath = new ContentValues();
+				contentValuesPath.put(Pathz.KEY_ROUTE__TAG, route.getTag());
+				long pathid = saveToDB(contentValuesPath, null, C.TABLE_PATHS, SQLiteDatabase.CONFLICT_REPLACE);
 				for (Pointz po : pa.getPoints()) {
 					// lat,lon,path__id
 					String conditionee = Pointz.KEY_PATHS__ID + "=" + pathid;
-					saveToDB(new String[] { Pointz.KEY_LAT, Pointz.KEY_LON, Pointz.KEY_PATHS__ID },
-							new String[] { po.getLat(), po.getLon(), String.valueOf(pathid) },
-							conditionee, C.TABLE_POINTS,
-							C.CONTENT_URI_POINT);
+					ContentValues contentValuesPoint = new ContentValues();
+					contentValuesPoint.put(Pointz.KEY_LAT, po.getLat());
+					contentValuesPoint.put(Pointz.KEY_LAT, po.getLon());
+					contentValuesPoint.put(Pointz.KEY_LAT, pathid);
+					saveToDB(contentValuesPoint, conditionee, C.TABLE_POINTS, SQLiteDatabase.CONFLICT_REPLACE);
 				}
+				messageIntent = new Intent(C.BROADCAST_POINTS_UPDATED_ACTION);
+				messageIntent.putExtra("path_id", pathid);
+				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
-			Intent i = new Intent(C.BROADCAST_ROUTE_DETAIL_UPDATED);
-			i.putExtra(Route.KEY_TAG, route.getTag());
-			LocalBroadcastManager.getInstance(this).sendBroadcast(i);
-
-		}
-		else if (RestClient.isRestUrlForSchedule(url)) {
-
-		}
-		else if (RestClient.isRestUrlForMessageForRoutes(url)) {
-
-		}
-		else if (RestClient.isRestUrlForPredictionswithStopArgument(url)) {
-
-		}
-		else if (RestClient.isRestUrlForPredictionswithStopAndRoutetagArguments(url)) {
-
-		}
-		else if (RestClient.isRestUrlForPredictionsForMultiStops(url)) {
+			messageIntent = new Intent(C.BROADCAST_PATHS_UPDATED_ACTION);
+			messageIntent.putExtra("route_key", route.getTag());
+			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 		}
 
+	}
+
+	private Cursor findFirstFromDb(String[] columns, String condition, String tableName) {
+		SQLiteDatabase db = mySQLiteOpenHelper.getReadableDatabase();
+		return db.query(tableName, columns, condition, null, null, null, null, "1");
 	}
 
 	// returns one of these
 	// id of the inserted or updated row if single row.
 	// -1 if multiple rows affected
-	private int saveToDB(String[] columnNames, String[] rowValues, String condition, String tableName, Uri contentUri) {
-		ContentValues values = new ContentValues();
-		for (int i = 0; i < columnNames.length; i++) {
-			String key = columnNames[i];
-			String value = rowValues[i];
-			if (value != null) {
-				values.put(key, value);
-			}
+	private long saveToDB(ContentValues contentValues, String condition, String tableName, int conflictAlgorithm)
+			throws Exception {
+		long id = -1;
+		SQLiteDatabase db = mySQLiteOpenHelper.getWritableDatabase();
+		// if conflict is passed. just the insert. if its CONFLICT_NONE the do
+		// update.
+		if (conflictAlgorithm != SQLiteDatabase.CONFLICT_NONE) {
+			id = db.insertWithOnConflict(tableName, null, contentValues, conflictAlgorithm);
 		}
-		// if record exist update or else
-		// insert in table with tagname eg route, values from attributesNames
-		// and values
-		int resultid = -1;
-		Uri contenturi = contentUri;
-		String[] projection = { "_id" };
-
-		ContentResolver cr = getContentResolver();
-		Cursor cursor = cr.query(contenturi, projection, condition, null, null);
-		try {
-			if (cursor.getCount() > 0) {
-				LogCursor.d("dump", cursor);
-				int rowsAffected = cr.update(contenturi, values, condition, null);
-				if (rowsAffected == 1) {
-					cursor = cr.query(contenturi, new String[] { "_id" }, condition, null, null);
-					if (cursor != null) {
-						cursor.moveToFirst();
-						resultid = cursor.getInt(0);
-					}
+		else {
+			int count = db.update(tableName, contentValues, condition, null);
+			if (count == 1) {
+				Cursor cursor = db.query(tableName, new String[] { "_id" }, condition, null, null, null, null, "1");
+				if (cursor != null) {
+					cursor.moveToFirst();
+					LogCursor.d("dump", cursor);
+					id = cursor.getInt(0);
 				}
-				cr.notifyChange(contenturi, null);
-				Log.i("DatabaseUpdatingService", String.valueOf(rowsAffected));
 			}
 			else {
-				Uri insertedUri = cr.insert(contenturi, values);
-				String insertedId = insertedUri.getPathSegments().get(1);
-				resultid = Integer.parseInt(insertedId);
-				cr.notifyChange(insertedUri, null);
-				Log.i("DatabaseUpdatingService", insertedUri.toString());
+				throw new SQLDataException("duplicate records found in table " + tableName + "for " + contentValues.toString());
 			}
-		} finally {
-			cursor.close();
 		}
-		return resultid;
+		return id;
+
 	}
 
 }

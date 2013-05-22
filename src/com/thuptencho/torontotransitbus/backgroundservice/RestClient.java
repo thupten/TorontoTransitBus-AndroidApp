@@ -123,9 +123,11 @@ public class RestClient {
 	}
 
 	/* ONLY a service should call this method */
-	public static Route getRouteDetail(String urlString)
+	//public static Route getRouteDetail(String urlString)
+	public static Route getRouteDetail(String  routeTag)
 			throws ClientProtocolException, IOException, XmlPullParserException {
-		String str = RestClient.getContentFromUrl(urlString);
+		String url = getRestUrlForRouteDetail(routeTag);
+		String str = getContentFromUrl(url);
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 		factory.setNamespaceAware(true);
 		XmlPullParser xpp = factory.newPullParser();

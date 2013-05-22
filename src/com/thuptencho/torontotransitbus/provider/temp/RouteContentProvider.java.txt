@@ -22,8 +22,8 @@ public class RouteContentProvider extends ContentProvider {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(C.AUTHORITY_ROUTE, "routes", ROUTES);
-		uriMatcher.addURI(C.AUTHORITY_ROUTE, "routes/#", ROUTE_SINGLE);
+		uriMatcher.addURI(C.AUTHORITY, "routes", ROUTES);
+		uriMatcher.addURI(C.AUTHORITY, "routes/#", ROUTE_SINGLE);
 	}
 
 	@Override

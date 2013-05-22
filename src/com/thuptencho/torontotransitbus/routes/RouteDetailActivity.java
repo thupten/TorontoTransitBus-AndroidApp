@@ -71,7 +71,7 @@ public class RouteDetailActivity extends Activity {
 		intent.putExtra(C.URL_STRING_KEY, RestClient.getRestUrlForRouteDetail(routeTag));
 		startService(intent);
 
-		IntentFilter ifilter = new IntentFilter(C.BROADCAST_ROUTE_DETAIL_UPDATED);
+		IntentFilter ifilter = new IntentFilter(C.BROADCAST_ROUTES_UPDATED_ACTION);
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, ifilter);
 
 		setContentView(R.layout.activity_route_detail);

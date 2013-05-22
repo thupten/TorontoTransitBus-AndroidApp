@@ -11,13 +11,13 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_TABLE_AGENCIES = 		"CREATE  TABLE Agencies (" + 
 			"			  _id INTEGER PRIMARY KEY AUTOINCREMENT," + 
-			"			  tag VARCHAR(45) NULL ," + 
+			"			  tag VARCHAR(45) NOT NULL UNIQUE," + 
 			"			  title VARCHAR(145) NULL ," + 
 			"			  regionTitle VARCHAR(145) NULL );";		  
 	
 	private static final String CREATE_TABLE_ROUTES = 	"CREATE  TABLE  Routes (" + 
 			"			  _id INTEGER PRIMARY KEY AUTOINCREMENT," + 
-			"			  tag VARCHAR(45) NULL ," + 
+			"			  tag VARCHAR(45) NOT NULL UNIQUE," + 
 			"			  title VARCHAR(145) NULL ," + 
 			"			  shortTitle VARCHAR(145) NULL ," + 
 			"			  color VARCHAR(45) NULL ," + 
@@ -30,7 +30,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 				
 	private static final String CREATE_TABLE_DIRECTIONS = 	"CREATE  TABLE  Directions (" + 
 			"			  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"			  tag VARCHAR(45) NULL ," + 
+			"			  tag VARCHAR(45) NOT NULL UNIQUE," +
 			"			  title VARCHAR(145) NULL ," + 
 			"			  name VARCHAR(145) NULL ," + 
 			"			  useForUI TINYINT(1) NULL ," + 
@@ -38,7 +38,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 				
 	private static final String CREATE_TABLE_STOPS = 	"CREATE  TABLE  Stops (" + 
 			"			  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"			  tag VARCHAR(45) NULL ," + 
+			"			  tag VARCHAR(45) NOT NULL UNIQUE," +
 			"			  title VARCHAR(145) NULL ," + 
 			"			  shortTitle VARCHAR(145) NULL ," + 
 			"			  lat VARCHAR(45) NULL ," + 
@@ -54,9 +54,10 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
 	private static final String CREATE_TABLE_POINTS = 	"CREATE  TABLE  Points (" + 
 			"			  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"			  lat VARCHAR(45) NULL ," + 
-			"			  lon VARCHAR(45) NULL ," + 
-			"			  Paths__id INTEGER NOT NULL);";
+			"			  lat VARCHAR(45) NOT NULL ," + 
+			"			  lon VARCHAR(45) NOT NULL ," + 
+			"			  Paths__id INTEGER NOT NULL,"+
+			"UNIQUE (lat, lon) ON CONFLICT REPLACE);";
 	
 	private static final String CREATE_TABLE_SCHEDULES = "CREATE  TABLE  Schedules (" +
 			"			_id INTEGER PRIMARY KEY AUTOINCREMENT," +
