@@ -1,37 +1,62 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RouteDetailActivity" >
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true" >
 
-    <TextView
-        android:id="@+id/labelRoute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/route_detail_vertical_margin"
-        android:text="@string/title_routes"
-        android:textSize="@dimen/defaultTextSize" />
+    <TableLayout
+        android:id="@+id/table_route_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/labelDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/labelRoute"
-        android:layout_margin="@dimen/route_detail_vertical_margin"
-        android:text="@string/direction"
-        android:textSize="@dimen/defaultTextSize" />
+        <TableRow>
 
-    <Spinner
-        android:id="@+id/spinnerDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/labelDirection"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:layout_toRightOf="@id/labelDirection" >
-    </Spinner>
+            <TextView
+                android:id="@+id/labelRoute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_routes"
+                android:textSize="@dimen/defaultTextSize" />
+        </TableRow>
 
-</RelativeLayout>
+        <TableRow>
+            <Spinner
+                android:id="@+id/spinnerDirection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:prompt="Direction"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent" >
+
+            <ListView
+                android:id="@+id/next_buses_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2" >
+            </ListView>
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

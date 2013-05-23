@@ -10,6 +10,10 @@
     <string name="title_reminder">Reminder</string>
     <string name="service_label">Database Updating Service</string>
     <string name="title_activity_route_detail">RouteDetailActivity</string>
+    
     <string name="direction">Direction</string>
+    <string name="stop">Stop</string>
+    <string name="next3buses">Next 3 Buses</string>
+    
 
 </resources>

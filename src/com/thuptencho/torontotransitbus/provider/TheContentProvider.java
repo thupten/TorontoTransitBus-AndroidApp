@@ -38,9 +38,7 @@ public class TheContentProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), C.DATABASE_NAME, null, C.DATABASE_VERSION);
-		if (mySqliteOpenHelper == null) {
-			return false;
-		}
+		if (mySqliteOpenHelper == null) return false;
 		return true;
 	}
 
@@ -80,8 +78,9 @@ public class TheContentProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
 		switch (uriMatcher.match(uri)) {
 		case ROUTES:
-		case ROUTES_SINGLE:
 			return queryRoutes(uri, columns, selection, selectionArguments, sortOrder);
+		case ROUTES_SINGLE:
+			return queryRoute(uri, columns, selection, selectionArguments, sortOrder);
 		case DIRECTIONS:
 		case DIRECTIONS_SINGLE:
 			return queryDirections(uri, columns, selection, selectionArguments, sortOrder);
@@ -101,6 +100,10 @@ public class TheContentProvider extends ContentProvider {
 			throw new IllegalArgumentException("invalid uri");
 		}
 	}
+	private Cursor queryRoute(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder){
+		
+		return null;
+	}
 
 	private Cursor queryRoutes(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
@@ -108,9 +111,9 @@ public class TheContentProvider extends ContentProvider {
 		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
 		c = db.query(C.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
 		
-		// todo set parameter for intentForService. what do i want the service
-		// to do? goto the web get the data and updateOrInsert in the database,
-		// then broadcast its change to activity.
+		/* todo set parameter for intentForService. what do i want the service
+		 to do? goto the web get the data and updateOrInsert in the database,
+		 then broadcast its change to activity.*/
 		Intent intentForService = new Intent(getContext(), DatabaseUpdatingService.class);
 		intentForService.putExtra("task", "query");
 		intentForService.putExtra("uri_string", uri.toString());

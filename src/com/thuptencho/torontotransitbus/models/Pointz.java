@@ -1,41 +1,51 @@
 package com.thuptencho.torontotransitbus.models;
 
-public class Pointz {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Pointz implements Parcelable{
 	public static final String KEY_ID = "_id", KEY_LAT = "lat", KEY_LON = "lon", KEY_PATHS__ID = "paths__id";
-	private String lat = "", lon = "";
-	private int path__Id;
+	public  String mLat = "", mLon = "";
+	public int mPath__Id=-1;
 
 	public Pointz(String lat, String lon, int path__Id) {
-		this.setLat(lat);
-		this.setLon(lon);
-		this.setPath__Id(path__Id);
+		this.mLat = lat;
+		this.mLon = lon;
+		this.mPath__Id = path__Id;
 	}
 
 	public Pointz() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public String getLat() {
-		return lat;
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 
-	public void setLat(String lat) {
-		this.lat = lat;
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(mLat);
+		dest.writeString(mLon);
+		dest.writeInt(mPath__Id);
+		
 	}
+	
+	public static Parcelable.Creator<Pointz> CREATOR = new Creator<Pointz>() {
+		
+		@Override
+		public Pointz[] newArray(int size) {
+			return new Pointz[size];
+		}
+		
+		@Override
+		public Pointz createFromParcel(Parcel source) {
+			Pointz po = new Pointz();
+			po.mLat = source.readString();
+			po.mLat = source.readString();
+			po.mPath__Id = source.readInt();
+			return po;
+		}
+	};
 
-	public String getLon() {
-		return lon;
-	}
-
-	public void setLon(String lon) {
-		this.lon = lon;
-	}
-
-	public int getPath__Id() {
-		return path__Id;
-	}
-
-	public void setPath__Id(int pathId) {
-		this.path__Id = pathId;
-	}
+	
 }

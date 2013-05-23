@@ -3,8 +3,10 @@ package com.thuptencho.torontotransitbus.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Route {
+public class Route implements Parcelable {
 	public static final String KEY_ID = "_id";
 	public static final String KEY_TAG = "tag";
 	public static final String KEY_TITLE = "title";
@@ -17,133 +19,72 @@ public class Route {
 	public static final String KEY_LON_MAX = "lonMax";
 	public static final String KEY_AGENCY__TAG = "agencies__tag";
 
-	private String tag = "", title = "", color = "", oppositeColor = "",
-			latMin = "", latMax = "", lonMin = "", lonMax = "", shortTitle="";
-	private int _id;
-
-	private List<Direction> directions = new ArrayList<Direction>();
-	private List<Stop> stops = new ArrayList<Stop>();
-	private List<Pathz> paths = new ArrayList<Pathz>();
-	private String agencyTag = "ttc";
+	public int _id = -1;
+	public String mTag = "", mTitle = "", nColor = "", mOppositeColor = "", mLatMin = "", mLatMax = "", mLonMin = "",
+			mLonMax = "", mShortTitle = "", mAgencyTag = "ttc";
+	public List<Direction> mDirections = new ArrayList<Direction>();
+	public List<Stop> mStops = new ArrayList<Stop>();
+	public List<Pathz> mPaths = new ArrayList<Pathz>();
 
 	public Route() {
 	}
 
 	public Route(String title, List<Direction> directions) {
-		this.title = title;
-		this.directions = directions;
+		this.mTitle = title;
+		this.mDirections = directions;
 	}
 
-	public String getTag() {
-		return tag;
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public List<Direction> getDirections() {
-		return directions;
-	}
-
-	public void setDirections(List<Direction> directions) {
-		this.directions = directions;
-	}
-
-	public List<Pathz> getPaths() {
-		return paths;
-	}
-
-	public void setPaths(List<Pathz> paths) {
-		this.paths = paths;
-	}
-
-	public List<Stop> getStops() {
-		return stops;
-	}
-
-	public void setStops(List<Stop> stops) {
-		this.stops = stops;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public String getOppositeColor() {
-		return oppositeColor;
-	}
-
-	public void setOppositeColor(String oppositeColor) {
-		this.oppositeColor = oppositeColor;
-	}
-
-	public String getLatMin() {
-		return latMin;
-	}
-
-	public void setLatMin(String latMin) {
-		this.latMin = latMin;
-	}
-
-	public String getLonMin() {
-		return lonMin;
-	}
-
-	public void setLonMin(String lonMin) {
-		this.lonMin = lonMin;
-	}
-
-	public String getLonMax() {
-		return lonMax;
-	}
-
-	public void setLonMax(String lonMax) {
-		this.lonMax = lonMax;
-	}
-
-	public String getLatMax() {
-		return latMax;
-	}
-
-	public void setLatMax(String latMax) {
-		this.latMax = latMax;
-	}
-
-	public String getShortTitle() {
-		return shortTitle;
-	}
-
-	public void setShortTitle(String shortTitle) {
-		this.shortTitle = shortTitle;
-	}
-
-	public String getAgency__Tag() {
-		return agencyTag;
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(this._id);
+		dest.writeString(this.mTag);
+		dest.writeString(this.mTitle);
+		dest.writeString(this.nColor);
+		dest.writeString(this.mOppositeColor);
+		dest.writeString(this.mLatMin);
+		dest.writeString(this.mLatMax);
+		dest.writeString(this.mLonMin);
+		dest.writeString(this.mLonMax);
+		dest.writeString(this.mShortTitle);
+		dest.writeString(this.mAgencyTag);
+		dest.writeTypedList(this.mDirections);
+		dest.writeTypedList(this.mStops);
+		dest.writeTypedList(this.mPaths);
 	}
 	
-	public String setAgency__Tag() {
-		return agencyTag;
-	}
+	
 
-	public int get_id() {
-		return _id;
-	}
+	public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
 
-	public void set_id(int _id) {
-		this._id = _id;
-	}
+		@Override
+		public Route createFromParcel(Parcel source) {
+			Route r = new Route();
+			r._id = source.readInt();
+			r.mTag = source.readString();
+			r.mTitle = source.readString();
+			r.nColor = source.readString();
+			r.mOppositeColor = source.readString();
+			r.mLatMin = source.readString();
+			r.mLatMax = source.readString();
+			r.mLonMin = source.readString();
+			r.mLonMax = source.readString();
+			r.mShortTitle = source.readString();
+			r.mAgencyTag = source.readString();
+			source.readTypedList(r.mDirections, Direction.CREATOR);
+			source.readTypedList(r.mStops, Stop.CREATOR);
+			source.readTypedList(r.mPaths, Pathz.CREATOR);
+			return r;
+		}
 
+		@Override
+		public Route[] newArray(int size) {
+			return new Route[size];
+		}
+
+	};
 }

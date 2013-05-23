@@ -2,6 +2,7 @@ package com.thuptencho.torontotransitbus.backgroundservice;
 
 import java.io.IOException;
 import java.sql.SQLDataException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -14,7 +15,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -101,18 +102,20 @@ public class DatabaseUpdatingService extends IntentService {
 		int match = uriMatcher.match(uri);
 		switch (match) {
 		case ROUTES:
-			List<Route> routes = RestClient.getRoutes();
+			ArrayList<Route> routes = (ArrayList<Route>)RestClient.getRoutes();
 			if (routes.size() > 0) {
 				ContentValues contentValues = new ContentValues();
 				for (Route r : routes) {
-					contentValues.put(Route.KEY_TAG, r.getTag());
-					contentValues.put(Route.KEY_TITLE, r.getTitle());
-					contentValues.put(Route.KEY_AGENCY__TAG, r.getAgency__Tag());
+					contentValues.put(Route.KEY_TAG, r.mTag);
+					contentValues.put(Route.KEY_TITLE, r.mTitle);
+					contentValues.put(Route.KEY_AGENCY__TAG, r.mAgencyTag);
 					saveToDB(contentValues, null, C.TABLE_ROUTES, SQLiteDatabase.CONFLICT_ABORT);
 				}
 				Intent i = new Intent(C.BROADCAST_ROUTES_UPDATED_ACTION);
+				i.putParcelableArrayListExtra("routes", routes);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 			}
+			break;
 		case ROUTES_SINGLE:
 			// get the id
 			int selectedRouteId = Integer.valueOf(uri.getPathSegments().get(1));
@@ -126,83 +129,83 @@ public class DatabaseUpdatingService extends IntentService {
 			route = RestClient.getRouteDetail(routeTag);
 
 			ContentValues contentValuesRoute = new ContentValues();
-			contentValuesRoute.put(Route.KEY_TAG, route.getTag());
-			contentValuesRoute.put(Route.KEY_TITLE, route.getTitle());
-			contentValuesRoute.put(Route.KEY_SHORT_TITLE, route.getShortTitle());
-			contentValuesRoute.put(Route.KEY_COLOR, route.getColor());
-			contentValuesRoute.put(Route.KEY_OPPOSITE_COLOR, route.getOppositeColor());
-			contentValuesRoute.put(Route.KEY_LAT_MAX, route.getLatMax());
-			contentValuesRoute.put(Route.KEY_LAT_MIN, route.getLatMin());
-			contentValuesRoute.put(Route.KEY_LON_MAX, route.getLonMax());
-			contentValuesRoute.put(Route.KEY_LON_MIN, route.getLonMin());
+			contentValuesRoute.put(Route.KEY_TAG, route.mTag);
+			contentValuesRoute.put(Route.KEY_TITLE, route.mTitle);
+			contentValuesRoute.put(Route.KEY_SHORT_TITLE, route.mShortTitle);
+			contentValuesRoute.put(Route.KEY_COLOR, route.nColor);
+			contentValuesRoute.put(Route.KEY_OPPOSITE_COLOR, route.mOppositeColor);
+			contentValuesRoute.put(Route.KEY_LAT_MAX, route.mLatMax);
+			contentValuesRoute.put(Route.KEY_LAT_MIN, route.mLatMin);
+			contentValuesRoute.put(Route.KEY_LON_MAX, route.mLonMax);
+			contentValuesRoute.put(Route.KEY_LON_MIN, route.mLonMin);
 
 			saveToDB(contentValuesRoute, null, C.TABLE_ROUTES, SQLiteDatabase.CONFLICT_REPLACE);
 
 			messageIntent = new Intent(C.BROADCAST_ROUTES_SINGLE_UPDATED_ACTION);
-			messageIntent.putExtra("route_tag", route.getTag());
+			messageIntent.putExtra("route_tag", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 			/* save route's Stop */
-			List<Stop> stops = route.getStops();
+			List<Stop> stops = route.mStops;
 			if (stops.size() > 0) {
 				for (Stop s : stops) {
 					ContentValues contentValuesStop = new ContentValues();
-					contentValuesStop.put(Stop.KEY_TAG, s.getTag());
-					contentValuesStop.put(Stop.KEY_LAT, s.getLat());
-					contentValuesStop.put(Stop.KEY_LON, s.getLon());
-					contentValuesStop.put(Stop.KEY_STOPID, s.getStopId());
-					contentValuesStop.put(Stop.KEY_TITLE, s.getTitle());
-					contentValuesStop.put(Stop.KEY_TAG, route.getTag());
+					contentValuesStop.put(Stop.KEY_TAG, s.mTag);
+					contentValuesStop.put(Stop.KEY_LAT, s.mLat);
+					contentValuesStop.put(Stop.KEY_LON, s.mLon);
+					contentValuesStop.put(Stop.KEY_STOPID, s.mStopId);
+					contentValuesStop.put(Stop.KEY_TITLE, s.mTitle);
+					contentValuesStop.put(Stop.KEY_TAG, route.mTag);
 					saveToDB(contentValuesStop, null, C.TABLE_STOPS, SQLiteDatabase.CONFLICT_NONE);
 				}
 				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
-				messageIntent.putExtra("route_tag", route.getTag());
+				messageIntent.putExtra("route_tag", route.mTag);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
 
 			/* save Direction and the Stops in the direction */
-			List<Direction> directions = route.getDirections();
+			List<Direction> directions = route.mDirections;
 
 			for (Direction d : directions) {
 				ContentValues contentValuesDirection = new ContentValues();
-				contentValuesDirection.put(Direction.KEY_TAG, d.getTag());
-				contentValuesDirection.put(Direction.KEY_TITLE, d.getTitle());
-				contentValuesDirection.put(Direction.KEY_NAME, d.getName());
-				contentValuesDirection.put(Direction.KEY_USEFORUI, d.getUseForUI());
-				contentValuesDirection.put(Direction.KEY_ROUTE__TAG, route.getTag());
+				contentValuesDirection.put(Direction.KEY_TAG, d.mTag);
+				contentValuesDirection.put(Direction.KEY_TITLE, d.mTitle);
+				contentValuesDirection.put(Direction.KEY_NAME, d.mName);
+				contentValuesDirection.put(Direction.KEY_USEFORUI, d.mUseForUI);
+				contentValuesDirection.put(Direction.KEY_ROUTE__TAG, route.mTag);
 
 				saveToDB(contentValuesDirection, null, C.TABLE_DIRECTIONS, SQLiteDatabase.CONFLICT_REPLACE);
-				List<Stop> stopsInDirection = d.getStops();
+				List<Stop> stopsInDirection = d.mStops;
 
 				for (Stop sd : stopsInDirection) {
 					ContentValues contentValuesStop = new ContentValues();
-					String conditionx = Stop.KEY_TAG + "='" + sd.getTag() + "'";
-					contentValuesStop.put(Stop.KEY_TAG, sd.getTag());
-					contentValuesStop.put(Stop.KEY_DIRECTION__TAG, d.getTag());
+					String conditionx = Stop.KEY_TAG + "='" + sd.mTag + "'";
+					contentValuesStop.put(Stop.KEY_TAG, sd.mTag);
+					contentValuesStop.put(Stop.KEY_DIRECTION__TAG, d.mTag);
 					saveToDB(contentValuesStop, conditionx, C.TABLE_STOPS, SQLiteDatabase.CONFLICT_NONE);
 				}
 				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
-				messageIntent.putExtra("route_tag", route.getTag());
-				messageIntent.putExtra("direction_tag", d.getTag());
+				messageIntent.putExtra("route_tag", route.mTag);
+				messageIntent.putExtra("direction_tag", d.mTag);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 			}
 			messageIntent = new Intent(C.BROADCAST_DIRECTIONS_UPDATED_ACTION);
-			messageIntent.putExtra("route_tag", route.getTag());
+			messageIntent.putExtra("route_tag", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 			/* save path and points */
-			List<Pathz> paths = route.getPaths();
+			List<Pathz> paths = route.mPaths;
 			for (Pathz pa : paths) {
 				ContentValues contentValuesPath = new ContentValues();
-				contentValuesPath.put(Pathz.KEY_ROUTE__TAG, route.getTag());
+				contentValuesPath.put(Pathz.KEY_ROUTE__TAG, route.mTag);
 				long pathid = saveToDB(contentValuesPath, null, C.TABLE_PATHS, SQLiteDatabase.CONFLICT_REPLACE);
-				for (Pointz po : pa.getPoints()) {
+				for (Pointz po : pa.mPoints) {
 					// lat,lon,path__id
 					String conditionee = Pointz.KEY_PATHS__ID + "=" + pathid;
 					ContentValues contentValuesPoint = new ContentValues();
-					contentValuesPoint.put(Pointz.KEY_LAT, po.getLat());
-					contentValuesPoint.put(Pointz.KEY_LAT, po.getLon());
+					contentValuesPoint.put(Pointz.KEY_LAT, po.mLat);
+					contentValuesPoint.put(Pointz.KEY_LAT, po.mLon);
 					contentValuesPoint.put(Pointz.KEY_LAT, pathid);
 					saveToDB(contentValuesPoint, conditionee, C.TABLE_POINTS, SQLiteDatabase.CONFLICT_REPLACE);
 				}
@@ -211,8 +214,12 @@ public class DatabaseUpdatingService extends IntentService {
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
 			messageIntent = new Intent(C.BROADCAST_PATHS_UPDATED_ACTION);
-			messageIntent.putExtra("route_key", route.getTag());
+			messageIntent.putExtra("route_key", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+			break;
+			
+		default:
+			throw new IllegalArgumentException("illegal argument here");
 
 		}
 
