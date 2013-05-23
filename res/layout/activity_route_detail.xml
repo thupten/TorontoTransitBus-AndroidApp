@@ -18,23 +18,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_routes"
-                android:textSize="@dimen/defaultTextSize" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </TableRow>
 
         <TableRow>
+
             <Spinner
                 android:id="@+id/spinnerDirection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:prompt="Direction"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/choose_direction"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </TableRow>
 
         <TableRow>
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/choose_stop" />
         </TableRow>
 
         <TableRow android:layout_width="match_parent" >
@@ -45,17 +48,59 @@
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceListItem" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent" >
+
+            <TextView
+                android:id="@+id/next_bus_desc_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/next_bus_time_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent" >
+
+            <TextView
+                android:id="@+id/next_bus_desc_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/next_bus_time_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/next3buses"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </TableRow>
 
         <TableRow android:layout_width="match_parent" >
 
-            <ListView
-                android:id="@+id/next_buses_list_view"
+            <TextView
+                android:id="@+id/next_bus_desc_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_span="2" >
-            </ListView>
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/next_bus_time_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/next3buses"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </TableRow>
     </TableLayout>
 
