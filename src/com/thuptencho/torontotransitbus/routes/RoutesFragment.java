@@ -58,6 +58,7 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 			Route r = new Route();
 			r._id = cursor.getInt(cursor.getColumnIndex(Route.KEY_ID));
 			r.mTitle = cursor.getString(cursor.getColumnIndex(Route.KEY_TITLE));
+			r.mTag = cursor.getString(cursor.getColumnIndex(Route.KEY_TAG));
 			mRoutes.add(r);
 		}
 		mAdapter.notifyDataSetChanged();
@@ -71,7 +72,7 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle arg) {
 		Loader<Cursor> loader = new CursorLoader(getActivity(), C.CONTENT_URI_ROUTE, new String[] { Route.KEY_ID,
-				Route.KEY_TITLE }, null, null, null);
+				Route.KEY_TITLE, Route.KEY_TAG }, null, null, null);
 		return loader;
 
 	}

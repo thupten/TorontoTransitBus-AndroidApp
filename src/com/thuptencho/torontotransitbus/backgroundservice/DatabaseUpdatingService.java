@@ -70,8 +70,6 @@ public class DatabaseUpdatingService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		// Log.d("DatabaseUpdatingService", "onHandleIntent(Intent intent)");
-
 		try {
 			String extraQuery = intent.getStringExtra("task");
 			if (extraQuery.equals("query")) {

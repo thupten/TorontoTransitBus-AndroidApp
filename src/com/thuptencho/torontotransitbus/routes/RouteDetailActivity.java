@@ -1,7 +1,11 @@
 package com.thuptencho.torontotransitbus.routes;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,10 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.R;
-import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
-import com.thuptencho.torontotransitbus.backgroundservice.RestClient;
 import com.thuptencho.torontotransitbus.models.Direction;
 import com.thuptencho.torontotransitbus.models.Route;
 
@@ -27,7 +30,7 @@ public class RouteDetailActivity extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
+			Log.i("adsf","asdfasdf");
 		}
 	};
 
@@ -35,42 +38,31 @@ public class RouteDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
-		int position = i.getIntExtra("position", 999999);
+		int routeId = i.getIntExtra("position", 999999);
 
 		mRoute = new Route();
 		mRoute.mTag = i.getStringExtra("routeTag");
 		mRoute.mTitle = i.getStringExtra("routeTitle");
 
-		String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TAG, Direction.KEY_TITLE,
-				Direction.KEY_NAME };
-		String condition = "(" + Direction.KEY_ROUTE__TAG + "=" + mRoute.mTag + ")AND(" + Direction.KEY_USEFORUI
-				+ "=\"true\"";
-		Cursor c = getContentResolver().query(C.CONTENT_URI_DIRECTION, projection, condition, null, null);
-		if (c != null) 
-			c.moveToFirst();
-		
-		//String routeTag = c.getString(0);
+		IntentFilter ifilter = new IntentFilter(C.BROADCAST_ROUTES_SINGLE_UPDATED_ACTION);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, ifilter);
 
-//		Intent intent = new Intent(this, DatabaseUpdatingService.class);
-//		intent.putExtra(C.URL_STRING_KEY, RestClient.getRestUrlForRouteDetail(routeTag));
-//		startService(intent);
-		//
-		// IntentFilter ifilter = new
-		// IntentFilter(C.BROADCAST_ROUTES_SINGLE_UPDATED_ACTION);
-		// LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-		// ifilter);
-		//
 		setContentView(R.layout.activity_route_detail);
 		mTVTitle = (TextView) findViewById(R.id.labelRoute);
 		mTVTitle.setText(mRoute.mTitle);
-		//
-		// mDirectionSpinner = (Spinner) findViewById(R.id.spinnerDirection);
-		// Cursor cursor = null;
-		// this.mAdapter = new DirectionsAdapter(getApplicationContext(),
-		// R.layout.route_detail_direction_view, cursor,
-		// new String[] { Direction.KEY_TITLE }, new int[] {
-		// R.id.direction_text_view }, 0);
-		// this.mDirectionSpinner.setAdapter(mAdapter);
+
+		mDirectionSpinner = (Spinner) findViewById(R.id.spinnerDirection);
+		Cursor cursor = null;
+		String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TAG, Direction.KEY_TITLE,
+				Direction.KEY_NAME };
+		String condition = "(" + Direction.KEY_ROUTE__TAG + "='" + mRoute.mTag + "')AND("
+				+ Direction.KEY_USEFORUI + "='true')";
+		Uri contentUriRouteSingle = ContentUris.withAppendedId(C.CONTENT_URI_ROUTE, routeId);
+		cursor = getContentResolver().query(contentUriRouteSingle, projection, condition,
+				null, null);
+		this.mAdapter = new DirectionsAdapter(getApplicationContext(), R.layout.route_detail_direction_view,
+				cursor, new String[] { Direction.KEY_TITLE }, new int[] { R.id.direction_text_view }, 0);
+		this.mDirectionSpinner.setAdapter(mAdapter);
 	}
 
 	@Override

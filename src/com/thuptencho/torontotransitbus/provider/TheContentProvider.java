@@ -3,10 +3,12 @@ package com.thuptencho.torontotransitbus.provider;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
 import com.thuptencho.torontotransitbus.backgroundservice.ServiceHelper;
+import com.thuptencho.torontotransitbus.models.Direction;
 
 /**
  * Created by thupten on 5/20/13.
@@ -76,32 +78,56 @@ public class TheContentProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
+		Cursor cursor = null;
 		switch (uriMatcher.match(uri)) {
 		case ROUTES:
-			return queryRoutes(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryRoutes(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case ROUTES_SINGLE:
-			return queryRoute(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryRoute(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case DIRECTIONS:
 		case DIRECTIONS_SINGLE:
-			return queryDirections(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryDirections(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case STOPS:
 		case STOPS_SINGLE:
-			return queryStops(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryStops(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case PATHS:
 		case PATHS_SINGLE:
-			return queryPaths(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryPaths(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case POINTS:
 		case POINTS_SINGLE:
-			return queryPoints(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryPoints(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case SCHEDULES:
 		case SCHEDULES_SINGLE:
-			return querySchedules(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = querySchedules(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		default:
 			throw new IllegalArgumentException("invalid uri");
 		}
+		/*
+		 * todo set parameter for intentForService. what do i want the service
+		 * to do? goto the web get the data and updateOrInsert in the database,
+		 * then broadcast its change to activity.
+		 */
+		Intent intentForService = new Intent(getContext(), DatabaseUpdatingService.class);
+		intentForService.putExtra("task", "query");
+		intentForService.putExtra("uri_string", uri.toString());
+		ServiceHelper.getInstance(getContext()).start(intentForService);
+		return cursor;
 	}
-	private Cursor queryRoute(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder){
+
+	private Cursor queryRoute(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(C.TABLE_ROUTES + "," + C.TABLE_DIRECTIONS + "," + C.TABLE_STOPS);
+		String groupBy = "";
 		
+		queryBuilder.query(db, columns, selection, selectionArguments, groupBy, having, sortOrder);
 		return null;
 	}
 
@@ -110,52 +136,44 @@ public class TheContentProvider extends ContentProvider {
 		Cursor c = null;
 		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
 		c = db.query(C.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
-		
-		/* todo set parameter for intentForService. what do i want the service
-		 to do? goto the web get the data and updateOrInsert in the database,
-		 then broadcast its change to activity.*/
-		Intent intentForService = new Intent(getContext(), DatabaseUpdatingService.class);
-		intentForService.putExtra("task", "query");
-		intentForService.putExtra("uri_string", uri.toString());
-		ServiceHelper.getInstance(getContext()).start(intentForService);
 		return c;
 	}
 
 	private Cursor queryDirections(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
 		Cursor c = null;
-		// todo
-
+		c = db.query(C.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
 		return c;
 	}
 
 	private Cursor queryStops(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
 		Cursor c = null;
-		// todo
-
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
+		c = db.query(C.TABLE_STOPS, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 
 	private Cursor queryPaths(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		// todo
-
+		c = db.query(C.TABLE_PATHS, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 
 	private Cursor queryPoints(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		// todo
-
+		c = db.query(C.TABLE_POINTS, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 
 	private Cursor querySchedules(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		// todo
-
+		c = db.query(C.TABLE_SCHEDULES, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 

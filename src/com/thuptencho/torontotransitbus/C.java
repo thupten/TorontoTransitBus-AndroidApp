@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class C {
 	public static final String DATABASE_NAME = "com.thuptencho.torontotransitbus.db";
-	public static final int DATABASE_VERSION = 5;
+	public static final int DATABASE_VERSION = 6;
 	public static final String TABLE_ROUTES = "routes";
 	public static final String TABLE_DIRECTIONS = "directions";
 	public static final String TABLE_STOPS = "stops";
