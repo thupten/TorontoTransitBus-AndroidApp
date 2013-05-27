@@ -1,16 +1,28 @@
 package com.thuptencho.torontotransitbus;
 
+import java.util.Date;
+
 import android.net.Uri;
 
+
 public class C {
-	public static final String DATABASE_NAME = "com.thuptencho.torontotransitbus.db";
-	public static final int DATABASE_VERSION = 6;
+	public static final String DATABASE_NAME = "appdb.db";
+	//todo remove this random in production. this random is to reset the database.
+	private static Date date = new Date();
+	public static final int DATABASE_VERSION = 1; 
 	public static final String TABLE_ROUTES = "routes";
 	public static final String TABLE_DIRECTIONS = "directions";
 	public static final String TABLE_STOPS = "stops";
+	
+	
+	public static final String TABLE_ROUTES_STOPS = "routes_stops";
+	public static final String TABLE_DIRECTIONS_STOPS = "directions_stops";
+	
 	public static final String TABLE_PATHS = "paths";
 	public static final String TABLE_POINTS = "points";
 	public static final String TABLE_SCHEDULES = "schedules";
+	
+	public static final String AGENCY = "ttc";
 	
 	public static final String URL_STRING_KEY = "urlString";
     public static final String AUTHORITY = "com.thuptencho.torontotransitbus.provider";

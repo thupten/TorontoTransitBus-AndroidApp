@@ -21,16 +21,7 @@
     </layouts>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56a535a3-63b5-4f55-918b-fa1633b6a836" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/C.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/C.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/DatabaseUpdatingService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/provider/TheContentProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="56a535a3-63b5-4f55-918b-fa1633b6a836" name="Default" comment="" />
     <ignored path="TorontoTransitBus.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369175410720" ignored="false" />
@@ -481,7 +472,7 @@
       <workItem from="1369238631186" duration="1950000" />
       <workItem from="1369240597499" duration="634000" />
       <workItem from="1369267623516" duration="1587000" />
-      <workItem from="1369352457257" duration="751000" />
+      <workItem from="1369352457257" duration="1041000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1369353000034</created>
@@ -491,7 +482,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17320000" />
+    <option name="totallyTimeSpent" value="17610000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />

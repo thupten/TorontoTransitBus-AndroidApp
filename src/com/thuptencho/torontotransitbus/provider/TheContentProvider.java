@@ -1,14 +1,19 @@
 package com.thuptencho.torontotransitbus.provider;
 
-import android.content.*;
+import android.content.ContentProvider;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
 import com.thuptencho.torontotransitbus.backgroundservice.ServiceHelper;
-import com.thuptencho.torontotransitbus.models.Direction;
+import com.thuptencho.torontotransitbus.models.Stop;
+import com.thuptencho.torontotransitbus.utilities.MyLogger;
 
 /**
  * Created by thupten on 5/20/13.
@@ -72,27 +77,45 @@ public class TheContentProvider extends ContentProvider {
 		case SCHEDULES_SINGLE:
 			return "vnd.android.cursor.item/vnd.thuptencho.torontotransitbus.schedules";
 		default:
-			throw new IllegalArgumentException("invalid uri");
+			throw new IllegalArgumentException("invalid uri %@#$");
 		}
 	}
 
 	@Override
 	public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
 		Cursor cursor = null;
+		String id;
 		switch (uriMatcher.match(uri)) {
 		case ROUTES:
 			cursor = queryRoutes(uri, columns, selection, selectionArguments, sortOrder);
 			break;
 		case ROUTES_SINGLE:
-			cursor = queryRoute(uri, columns, selection, selectionArguments, sortOrder);
+			String routeTag;
+			routeTag = uri.getPathSegments().get(1);
+			if (selection == null) {
+				selection = "tag='" + routeTag + "'";
+			}
+			else {
+				selection = selection + "AND (tag='" + routeTag + "')";
+			}
+			cursor = queryRoutes(uri, columns, selection, selectionArguments, sortOrder);
 			break;
 		case DIRECTIONS:
+			cursor = queryDirections(uri, columns, selection, selectionArguments, sortOrder);
+			break;
 		case DIRECTIONS_SINGLE:
+			id = uri.getPathSegments().get(1);
+			if (selection == null) {
+				selection = "_id='" + id + "'";
+			}
+			else {
+				selection = selection + "AND (_id='" + id + "')";
+			}
 			cursor = queryDirections(uri, columns, selection, selectionArguments, sortOrder);
 			break;
 		case STOPS:
 		case STOPS_SINGLE:
-			cursor = queryStops(uri, columns, selection, selectionArguments, sortOrder);
+			cursor = queryStopsForDirection(uri, columns, selection, selectionArguments, sortOrder);
 			break;
 		case PATHS:
 		case PATHS_SINGLE:
@@ -121,16 +144,6 @@ public class TheContentProvider extends ContentProvider {
 		return cursor;
 	}
 
-	private Cursor queryRoute(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
-		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(C.TABLE_ROUTES + "," + C.TABLE_DIRECTIONS + "," + C.TABLE_STOPS);
-		String groupBy = "";
-		
-		queryBuilder.query(db, columns, selection, selectionArguments, groupBy, having, sortOrder);
-		return null;
-	}
-
 	private Cursor queryRoutes(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
 		Cursor c = null;
@@ -141,17 +154,29 @@ public class TheContentProvider extends ContentProvider {
 
 	private Cursor queryDirections(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
-		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
 		c = db.query(C.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
 		return c;
 	}
 
-	private Cursor queryStops(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
+	private Cursor queryStopsForDirection(Uri uri, String[] columns, String selection, String[] selectionArguments,
+			String sortOrder) {
 		Cursor c = null;
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		c = db.query(C.TABLE_STOPS, columns, selection, selectionArguments, null, null, sortOrder, null);
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		qb.setTables(C.TABLE_DIRECTIONS_STOPS + " INNER JOIN " + C.TABLE_STOPS + " ON(" + C.TABLE_DIRECTIONS_STOPS
+				+ ".stop__tag=" + C.TABLE_STOPS + ".tag)");
+		String[] projectionIn = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TITLE };
+		String groupBy = null, having = null;
+		c = qb.query(db, projectionIn, selection, selectionArguments, groupBy, having, sortOrder);
+		
 		return c;
+	}
+
+	private Cursor queryStopsForRoute(Uri uri, String[] columns, String selection, String[] selectionArguments,
+			String sortOrder) {
+		return null;
 	}
 
 	private Cursor queryPaths(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {

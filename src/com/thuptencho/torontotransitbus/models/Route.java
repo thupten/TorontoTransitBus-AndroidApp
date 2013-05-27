@@ -26,6 +26,12 @@ public class Route implements Parcelable {
 	public List<Stop> mStops = new ArrayList<Stop>();
 	public List<Pathz> mPaths = new ArrayList<Pathz>();
 
+	@Override
+	public String toString() {
+		return "Tag:"+ mTag + " Title:"+mTitle;
+		
+	}
+	
 	public Route() {
 	}
 

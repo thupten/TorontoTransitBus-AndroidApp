@@ -14,6 +14,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.models.Route;
 
-public class RoutesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class RoutesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	// private RoutesAdapter adapter;
 	private RoutesAdapter mAdapter;
 	private ArrayList<Route> mRoutes;
@@ -31,8 +32,8 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 		public void onReceive(Context context, Intent intent) {
 			mRoutes.clear();
 			ArrayList<Parcelable> routes = intent.getParcelableArrayListExtra("routes");
-			for(Parcelable r:routes){
-				Route rr = (Route)r;
+			for (Parcelable r : routes) {
+				Route rr = (Route) r;
 				mRoutes.add(rr);
 			}
 			mAdapter.notifyDataSetChanged();
@@ -52,11 +53,11 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		//we have the cursor of the routes from db use this to update the array
+		// we have the cursor of the routes from db use this to update the array
 		mRoutes.clear();
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 			Route r = new Route();
-			r._id = cursor.getInt(cursor.getColumnIndex(Route.KEY_ID));
+			// r._id = cursor.getInt(cursor.getColumnIndex(Route.KEY_ID));
 			r.mTitle = cursor.getString(cursor.getColumnIndex(Route.KEY_TITLE));
 			r.mTag = cursor.getString(cursor.getColumnIndex(Route.KEY_TAG));
 			mRoutes.add(r);
@@ -66,13 +67,13 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		
+
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle arg) {
-		Loader<Cursor> loader = new CursorLoader(getActivity(), C.CONTENT_URI_ROUTE, new String[] { Route.KEY_ID,
-				Route.KEY_TITLE, Route.KEY_TAG }, null, null, null);
+		Loader<Cursor> loader = new CursorLoader(getActivity(), C.CONTENT_URI_ROUTE, new String[] { Route.KEY_TAG,
+				Route.KEY_TITLE }, null, null, null);
 		return loader;
 
 	}
@@ -82,9 +83,9 @@ public class RoutesFragment extends ListFragment implements LoaderManager.Loader
 		super.onListItemClick(l, v, position, id);
 		Toast.makeText(getActivity(), "clicked " + position, Toast.LENGTH_SHORT).show();
 		Intent i = new Intent(getActivity(), RouteDetailActivity.class);
-		i.putExtra("position", position);
-		i.putExtra("routeTitle", mRoutes.get(position).mTitle);
-		i.putExtra("routeTag", mRoutes.get(position).mTag);
+		Route item = (Route) getListAdapter().getItem(position);
+		Log.println(Log.ASSERT, "onListItemClick", item.toString());
+		i.putExtra("routeTag", item.mTag);
 		startActivity(i);
 	}
 
