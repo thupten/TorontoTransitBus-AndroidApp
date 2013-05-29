@@ -264,6 +264,7 @@ public class RestClient {
 				}
 			}
 		}
+		
 		return predictions;
 	}
 

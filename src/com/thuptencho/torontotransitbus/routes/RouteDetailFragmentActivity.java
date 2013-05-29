@@ -125,41 +125,37 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		mBtnGo = (Button) findViewById(R.id.btnSubmit);
 
 		mBtnGo.setOnClickListener(btnListener);
-		
+
 		mResultDesc0 = (TextView) findViewById(R.id.next_bus_desc_0);
 		mResultDesc1 = (TextView) findViewById(R.id.next_bus_desc_1);
 		mResultDesc2 = (TextView) findViewById(R.id.next_bus_desc_2);
 		mResultTime0 = (TextView) findViewById(R.id.next_bus_time_0);
 		mResultTime1 = (TextView) findViewById(R.id.next_bus_time_1);
 		mResultTime2 = (TextView) findViewById(R.id.next_bus_time_2);
-		
+
 	}
 
 	android.view.View.OnClickListener btnListener = new android.view.View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			MyLogger.log("request sample:::http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&r=54&s=6938");
-			if (mRouteTag.isEmpty() || mStopTag.isEmpty()) {
+			if (!mRouteTag.isEmpty() && !mStopTag.isEmpty()) {
+				new PredictionsAsyncTask() {
+					@Override
+					protected void onPostExecute(List<Prediction> predictions) {
+						super.onPostExecute(predictions);
+						mResultTime0.setText(predictions.get(0).minutes);
+						mResultTime1.setText(predictions.get(1).minutes);
+						mResultTime2.setText(predictions.get(2).minutes);
 
-			}
-			else {
-				try {
-					List<Prediction> predictions = RestClient.getPredictions(mRouteTag, mStopTag);
-					for (Prediction o : predictions) {
-						MyLogger.log(o.toString());
+						mResultTime0.setText(predictions.get(0).minutes);
+						mResultTime1.setText(predictions.get(1).minutes);
+						mResultTime2.setText(predictions.get(2).minutes);
+
 					}
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (XmlPullParserException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				}.execute(new String[] { mRouteTag, mStopTag });
 			}
+
 		}
 	};
 
@@ -257,32 +253,6 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 	private class PredictionsAsyncTask extends AsyncTask<String, Integer, List<Prediction>> {
 
 		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onPostExecute(List<Prediction> predictions) {
-			super.onPostExecute(predictions);
-			mResultTime0.setText(predictions.get(0).minutes);
-			mResultTime1.setText(predictions.get(1).minutes);
-			mResultTime2.setText(predictions.get(2).minutes);
-			
-			mResultTime0.setText(predictions.get(0).minutes);
-			mResultTime1.setText(predictions.get(1).minutes);
-			mResultTime2.setText(predictions.get(2).minutes);
-			
-			
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-
-		@Override
 		protected void onProgressUpdate(Integer... values) {
 			// TODO Auto-generated method stub
 			super.onProgressUpdate(values);
@@ -296,17 +266,14 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 			try {
 				predictions = RestClient.getPredictions(routeTag, stopTag);
 			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (XmlPullParserException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return predictions;
 		}
-		
+
 	}
 }
