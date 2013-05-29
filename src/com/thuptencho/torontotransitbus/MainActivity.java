@@ -137,6 +137,7 @@ public class MainActivity extends FragmentActivity implements
 				return getString(R.string.title_reminder).toUpperCase(l);
 			}
 			return null;
+			
 		}
 	}
 

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 
 import com.thuptencho.torontotransitbus.MainActivity.DummySectionFragment;
-import com.thuptencho.torontotransitbus.routes.RoutesFragment;
+import com.thuptencho.torontotransitbus.routes.RoutesListFragment;
 
 public class SectionsFragments {
 	public static final String ARG_SECTION_NUMBER = "section_number";
@@ -14,7 +14,7 @@ public class SectionsFragments {
 		arguments.putInt(ARG_SECTION_NUMBER, num);
 		switch (num) { 
 		case 0:
-			ListFragment lf = new RoutesFragment();
+			ListFragment lf = new RoutesListFragment();
 			lf.setArguments(arguments);
 			return lf;
 		case 1:

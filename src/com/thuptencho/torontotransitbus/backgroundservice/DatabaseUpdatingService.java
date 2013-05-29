@@ -38,18 +38,18 @@ public class DatabaseUpdatingService extends IntentService {
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(C.AUTHORITY, "routes", ROUTES);
-		uriMatcher.addURI(C.AUTHORITY, "routes/#", ROUTES_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "directions", DIRECTIONS);
-		uriMatcher.addURI(C.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "stops", STOPS);
-		uriMatcher.addURI(C.AUTHORITY, "stops/#", STOPS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "paths", PATHS);
-		uriMatcher.addURI(C.AUTHORITY, "paths/#", PATHS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "points", POINTS);
-		uriMatcher.addURI(C.AUTHORITY, "points/#", POINTS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "points", SCHEDULES);
-		uriMatcher.addURI(C.AUTHORITY, "points/#", SCHEDULES_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "routes", ROUTES);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "routes/#", ROUTES_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "directions", DIRECTIONS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "stops", STOPS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "stops/#", STOPS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "paths", PATHS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "paths/#", PATHS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points", POINTS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points/#", POINTS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points", SCHEDULES);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points/#", SCHEDULES_SINGLE);
 	}
 
 	public DatabaseUpdatingService() {
@@ -63,7 +63,7 @@ public class DatabaseUpdatingService extends IntentService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), C.DATABASE_NAME, null, C.DATABASE_VERSION);
+		mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), C.Db.DATABASE_NAME, null, C.Db.DATABASE_VERSION);
 	}
 
 	@Override
@@ -112,13 +112,13 @@ public class DatabaseUpdatingService extends IntentService {
 					contentValues.put(Route.KEY_TITLE, r.mTitle);
 					contentValues.put(Route.KEY_AGENCY__TAG, r.mAgencyTag);
 
-					int update = db.update(C.TABLE_ROUTES, contentValues, "tag='" + r.mTag + "'", null);
+					int update = db.update(C.Db.TABLE_ROUTES, contentValues, "tag='" + r.mTag + "'", null);
 					if (update == 0) {
-						db.insert(C.TABLE_ROUTES, null, contentValues);
+						db.insert(C.Db.TABLE_ROUTES, null, contentValues);
 					}
 
 				}
-				Intent i = new Intent(C.BROADCAST_ROUTES_UPDATED_ACTION);
+				Intent i = new Intent(C.Broadcast.ROUTES_UPDATED_ACTION);
 				i.putParcelableArrayListExtra("routes", routes);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 			}
@@ -141,13 +141,13 @@ public class DatabaseUpdatingService extends IntentService {
 			contentValuesRoute.put(Route.KEY_LON_MIN, route.mLonMin);
 			contentValuesRoute.put(Route.KEY_AGENCY__TAG, C.AGENCY);
 
-			int update = db.update(C.TABLE_ROUTES, contentValuesRoute, "tag=?", new String[] { routeTag });
+			int update = db.update(C.Db.TABLE_ROUTES, contentValuesRoute, "tag=?", new String[] { routeTag });
 			if (update == 0) {
-				db.insert(C.TABLE_ROUTES, null, contentValuesRoute);
+				db.insert(C.Db.TABLE_ROUTES, null, contentValuesRoute);
 			}
 
 			Intent messageIntent = new Intent();
-			messageIntent = new Intent(C.BROADCAST_ROUTES_SINGLE_UPDATED_ACTION);
+			messageIntent = new Intent(C.Broadcast.ROUTES_SINGLE_UPDATED_ACTION);
 			messageIntent.putExtra("route_tag", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
@@ -165,23 +165,23 @@ public class DatabaseUpdatingService extends IntentService {
 
 					// int update1 = db.update(C.TABLE_STOPS, contentValuesStop,
 					// "tag=?", new String[] { s.mTag });
-					int update1 = db.update(C.TABLE_STOPS, contentValuesStop, "tag='" + s.mTag + "'", null);
+					int update1 = db.update(C.Db.TABLE_STOPS, contentValuesStop, "tag='" + s.mTag + "'", null);
 					if (update1 == 0) {
-						db.insert(C.TABLE_STOPS, null, contentValuesStop);
+						db.insert(C.Db.TABLE_STOPS, null, contentValuesStop);
 					}
 
 					// entry in routes_stops table.
 					ContentValues contentValuesRouteStop = new ContentValues();
 					contentValuesRouteStop.put("Route__tag", route.mTag);
 					contentValuesRouteStop.put("Stop__tag", s.mTag);
-					int update2 = db.update(C.TABLE_ROUTES_STOPS, contentValuesRouteStop,
+					int update2 = db.update(C.Db.TABLE_ROUTES_STOPS, contentValuesRouteStop,
 							"(Route__tag=?) AND (Stop__tag=?)", new String[] { route.mTag, s.mTag });
 					if (update2 == 0) {
-						db.insert(C.TABLE_ROUTES_STOPS, null, contentValuesRouteStop);
+						db.insert(C.Db.TABLE_ROUTES_STOPS, null, contentValuesRouteStop);
 					}
 
 				}
-				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
+				messageIntent = new Intent(C.Broadcast.R_STOPS_UPDATED_ACTION);
 				messageIntent.putExtra("route_tag", route.mTag);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
@@ -196,10 +196,10 @@ public class DatabaseUpdatingService extends IntentService {
 				contentValuesDirection.put(Direction.KEY_NAME, d.mName);
 				contentValuesDirection.put(Direction.KEY_USEFORUI, d.mUseForUI);
 				contentValuesDirection.put(Direction.KEY_ROUTE__TAG, route.mTag);
-				int update3 = db.update(C.TABLE_DIRECTIONS, contentValuesDirection, "(tag=?) AND (route__tag=?)",
+				int update3 = db.update(C.Db.TABLE_DIRECTIONS, contentValuesDirection, "(tag=?) AND (route__tag=?)",
 						new String[] { d.mTag, route.mTag });
 				if (update3 == 0) {
-					db.insert(C.TABLE_DIRECTIONS, null, contentValuesDirection);
+					db.insert(C.Db.TABLE_DIRECTIONS, null, contentValuesDirection);
 				}
 
 				List<Stop> stopsInDirection = d.mStops;
@@ -208,19 +208,19 @@ public class DatabaseUpdatingService extends IntentService {
 					ContentValues contentValuesDirectionStop = new ContentValues();
 					contentValuesDirectionStop.put("Direction__tag", d.mTag);
 					contentValuesDirectionStop.put("Stop__tag", sd.mTag);
-					int update4 = db.update(C.TABLE_DIRECTIONS_STOPS, contentValuesDirectionStop,
+					int update4 = db.update(C.Db.TABLE_DIRECTIONS_STOPS, contentValuesDirectionStop,
 							"(Direction__tag=?) AND (Stop__tag=?)", new String[] { d.mTag, sd.mTag });
 					if (update4 == 0) {
-						db.insert(C.TABLE_DIRECTIONS_STOPS, null, contentValuesDirectionStop);
+						db.insert(C.Db.TABLE_DIRECTIONS_STOPS, null, contentValuesDirectionStop);
 					}
 				}
-				messageIntent = new Intent(C.BROADCAST_STOPS_UPDATED_ACTION);
+				messageIntent = new Intent(C.Broadcast.D_STOPS_UPDATED_ACTION);
 				messageIntent.putExtra("route_tag", route.mTag);
 				messageIntent.putExtra("direction_tag", d.mTag);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
 			}
-			messageIntent = new Intent(C.BROADCAST_DIRECTIONS_UPDATED_ACTION);
+			messageIntent = new Intent(C.Broadcast.DIRECTIONS_UPDATED_ACTION);
 			messageIntent.putExtra("route_tag", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
@@ -231,7 +231,7 @@ public class DatabaseUpdatingService extends IntentService {
 				contentValuesPath.put(Pathz.KEY_ROUTE__TAG, route.mTag);
 				// if the path and get its id, if not found insert new.
 				long pathid = -1;
-				Cursor cursor = db.query(C.TABLE_PATHS, new String[] { "_id" }, "route__tag='" + route.mTag + "'",
+				Cursor cursor = db.query(C.Db.TABLE_PATHS, new String[] { "_id" }, "route__tag='" + route.mTag + "'",
 						null, null, null, null);
 				if (cursor.getCount() > 0) {
 					cursor.moveToFirst();
@@ -240,7 +240,7 @@ public class DatabaseUpdatingService extends IntentService {
 				cursor.close();
 
 				if (pathid == -1) {
-					pathid = db.insert(C.TABLE_PATHS, null, contentValuesPath);
+					pathid = db.insert(C.Db.TABLE_PATHS, null, contentValuesPath);
 				}
 
 				for (Pointz po : pa.mPoints) {
@@ -249,17 +249,17 @@ public class DatabaseUpdatingService extends IntentService {
 					contentValuesPoint.put(Pointz.KEY_LAT, po.mLat);
 					contentValuesPoint.put(Pointz.KEY_LON, po.mLon);
 					contentValuesPoint.put(Pointz.KEY_PATHS__ID, pathid);
-					int update6 = db.update(C.TABLE_POINTS, contentValuesPoint, "paths__id=?",
+					int update6 = db.update(C.Db.TABLE_POINTS, contentValuesPoint, "paths__id=?",
 							new String[] { String.valueOf(pathid) });
 					if (update6 == 0) {
-						db.insert(C.TABLE_POINTS, null, contentValuesPoint);
+						db.insert(C.Db.TABLE_POINTS, null, contentValuesPoint);
 					}
 				}
-				messageIntent = new Intent(C.BROADCAST_POINTS_UPDATED_ACTION);
+				messageIntent = new Intent(C.Broadcast.POINTS_UPDATED_ACTION);
 				messageIntent.putExtra("path_id", pathid);
 				LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			}
-			messageIntent = new Intent(C.BROADCAST_PATHS_UPDATED_ACTION);
+			messageIntent = new Intent(C.Broadcast.PATHS_UPDATED_ACTION);
 			messageIntent.putExtra("route_key", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			break;

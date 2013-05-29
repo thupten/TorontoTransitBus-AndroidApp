@@ -12,8 +12,6 @@ import android.net.Uri;
 import com.thuptencho.torontotransitbus.C;
 import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
 import com.thuptencho.torontotransitbus.backgroundservice.ServiceHelper;
-import com.thuptencho.torontotransitbus.models.Stop;
-import com.thuptencho.torontotransitbus.utilities.MyLogger;
 
 /**
  * Created by thupten on 5/20/13.
@@ -23,28 +21,29 @@ public class TheContentProvider extends ContentProvider {
 	private static UriMatcher uriMatcher;
 	private static final int ROUTES = 10, ROUTES_SINGLE = 11, DIRECTIONS = 20, DIRECTIONS_SINGLE = 21, STOPS = 30,
 			STOPS_SINGLE = 31, PATHS = 40, PATHS_SINGLE = 41, POINTS = 50, POINTS_SINGLE = 51, SCHEDULES = 60,
-			SCHEDULES_SINGLE = 61;
+			SCHEDULES_SINGLE = 61, PREDICTIONS = 70;
 	private MySQLiteOpenHelper mySqliteOpenHelper;
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(C.AUTHORITY, "routes", ROUTES);
-		uriMatcher.addURI(C.AUTHORITY, "routes/#", ROUTES_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "directions", DIRECTIONS);
-		uriMatcher.addURI(C.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "stops", STOPS);
-		uriMatcher.addURI(C.AUTHORITY, "stops/#", STOPS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "paths", PATHS);
-		uriMatcher.addURI(C.AUTHORITY, "paths/#", PATHS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "points", POINTS);
-		uriMatcher.addURI(C.AUTHORITY, "points/#", POINTS_SINGLE);
-		uriMatcher.addURI(C.AUTHORITY, "points", SCHEDULES);
-		uriMatcher.addURI(C.AUTHORITY, "points/#", SCHEDULES_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "routes", ROUTES);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "routes/#", ROUTES_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "directions", DIRECTIONS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "directions/#", DIRECTIONS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "stops", STOPS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "stops/#", STOPS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "paths", PATHS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "paths/#", PATHS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points", POINTS);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points/#", POINTS_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points", SCHEDULES);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "points/#", SCHEDULES_SINGLE);
+		uriMatcher.addURI(C.ContentUri.AUTHORITY, "predictions", PREDICTIONS);
 	}
 
 	@Override
 	public boolean onCreate() {
-		mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), C.DATABASE_NAME, null, C.DATABASE_VERSION);
+		mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), C.Db.DATABASE_NAME, null, C.Db.DATABASE_VERSION);
 		if (mySqliteOpenHelper == null) return false;
 		return true;
 	}
@@ -76,6 +75,8 @@ public class TheContentProvider extends ContentProvider {
 			return "vnd.android.cursor.dir/vnd.thuptencho.torontotransitbus.schedules";
 		case SCHEDULES_SINGLE:
 			return "vnd.android.cursor.item/vnd.thuptencho.torontotransitbus.schedules";
+		case PREDICTIONS:
+			return "vnd.android.cursor.item/vnd.thuptencho.torontotransitbus.predictions";
 		default:
 			throw new IllegalArgumentException("invalid uri %@#$");
 		}
@@ -83,6 +84,7 @@ public class TheContentProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
+		
 		Cursor cursor = null;
 		String id;
 		switch (uriMatcher.match(uri)) {
@@ -129,6 +131,8 @@ public class TheContentProvider extends ContentProvider {
 		case SCHEDULES_SINGLE:
 			cursor = querySchedules(uri, columns, selection, selectionArguments, sortOrder);
 			break;
+		case PREDICTIONS:
+			cursor = queryPredictions(uri, columns, selection, selectionArguments, sortOrder);
 		default:
 			throw new IllegalArgumentException("invalid uri");
 		}
@@ -144,11 +148,17 @@ public class TheContentProvider extends ContentProvider {
 		return cursor;
 	}
 
+	private Cursor queryPredictions(Uri uri, String[] columns, String selection, String[] selectionArguments,
+			String sortOrder) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private Cursor queryRoutes(Uri uri, String[] columns, String selection, String[] selectionArguments,
 			String sortOrder) {
 		Cursor c = null;
 		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
-		c = db.query(C.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
+		c = db.query(C.Db.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
 		return c;
 	}
 
@@ -156,7 +166,7 @@ public class TheContentProvider extends ContentProvider {
 			String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		c = db.query(C.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
+		c = db.query(C.Db.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
 		return c;
 	}
 
@@ -165,12 +175,12 @@ public class TheContentProvider extends ContentProvider {
 		Cursor c = null;
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-		qb.setTables(C.TABLE_DIRECTIONS_STOPS + " INNER JOIN " + C.TABLE_STOPS + " ON(" + C.TABLE_DIRECTIONS_STOPS
-				+ ".stop__tag=" + C.TABLE_STOPS + ".tag)");
-		String[] projectionIn = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TITLE };
+		qb.setTables(C.Db.TABLE_DIRECTIONS_STOPS + " INNER JOIN " + C.Db.TABLE_STOPS + " ON("
+				+ C.Db.TABLE_DIRECTIONS_STOPS + ".stop__tag=" + C.Db.TABLE_STOPS + ".tag)");
+		//String[] projectionIn = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TITLE };
 		String groupBy = null, having = null;
-		c = qb.query(db, projectionIn, selection, selectionArguments, groupBy, having, sortOrder);
-		
+		c = qb.query(db, columns, selection, selectionArguments, groupBy, having, sortOrder);
+
 		return c;
 	}
 
@@ -182,7 +192,7 @@ public class TheContentProvider extends ContentProvider {
 	private Cursor queryPaths(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		c = db.query(C.TABLE_PATHS, columns, selection, selectionArguments, null, null, sortOrder, null);
+		c = db.query(C.Db.TABLE_PATHS, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 
@@ -190,7 +200,7 @@ public class TheContentProvider extends ContentProvider {
 			String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		c = db.query(C.TABLE_POINTS, columns, selection, selectionArguments, null, null, sortOrder, null);
+		c = db.query(C.Db.TABLE_POINTS, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 
@@ -198,7 +208,7 @@ public class TheContentProvider extends ContentProvider {
 			String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		Cursor c = null;
-		c = db.query(C.TABLE_SCHEDULES, columns, selection, selectionArguments, null, null, sortOrder, null);
+		c = db.query(C.Db.TABLE_SCHEDULES, columns, selection, selectionArguments, null, null, sortOrder, null);
 		return c;
 	}
 

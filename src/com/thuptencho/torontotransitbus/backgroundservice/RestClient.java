@@ -24,11 +24,15 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.os.AsyncTask;
+
 import com.thuptencho.torontotransitbus.models.Direction;
 import com.thuptencho.torontotransitbus.models.Pathz;
 import com.thuptencho.torontotransitbus.models.Pointz;
+import com.thuptencho.torontotransitbus.models.Prediction;
 import com.thuptencho.torontotransitbus.models.Route;
 import com.thuptencho.torontotransitbus.models.Stop;
+import com.thuptencho.torontotransitbus.utilities.MyLogger;
 
 public class RestClient {
 	private static final String REST_URL_BASE = "http://webservices.nextbus.com/service/publicXMLFeed?a=ttc";
@@ -67,8 +71,11 @@ public class RestClient {
 
 		});
 		try {
-			HttpGet httpget = new HttpGet(urlString);
+
+			MyLogger.log("GET: " + urlString);
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+			HttpGet httpget = new HttpGet(urlString);
 			String responseBody = httpClient.execute(httpget, responseHandler);
 			return responseBody;
 
@@ -85,6 +92,7 @@ public class RestClient {
 	public static List<Route> getRoutes() throws XmlPullParserException, IOException {
 
 		String urlString = RestClient.getRestUrlForRoutelist();
+
 		String str = RestClient.getContentFromUrl(urlString);
 
 		List<Route> routes = new ArrayList<Route>();
@@ -227,6 +235,38 @@ public class RestClient {
 		return null;
 	}
 
+	public static List<Prediction> getPredictions(String routeTag, String stopTag) throws ClientProtocolException,
+			IOException, XmlPullParserException {
+		String url = getRestUrlForPredictions(stopTag, routeTag);
+		String predictionContent = RestClient.getContentFromUrl(url);
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xpp = factory.newPullParser();
+		xpp.setInput(new StringReader(predictionContent));
+		int eventType = xpp.getEventType();
+		List<Prediction> predictions = new ArrayList<Prediction>();
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			switch (eventType) {
+			case XmlPullParser.START_TAG:
+				if (xpp.getName().equalsIgnoreCase("prediction")) {
+					Prediction pre = new Prediction();
+					pre.epochTime = xpp.getAttributeValue(null, "epochTime");
+					pre.seconds = xpp.getAttributeValue(null, "seconds");
+					pre.minutes = xpp.getAttributeValue(null, "minutes");
+					pre.isDeparture = xpp.getAttributeValue(null, "isDeparture");
+					pre.affectedByLayover = xpp.getAttributeValue(null, "affectedByLayover");
+					pre.branch = xpp.getAttributeValue(null, "branch");
+					pre.dirTag = xpp.getAttributeValue(null, "dirTag");
+					pre.vehicle = xpp.getAttributeValue(null, "vehicle");
+					pre.block = xpp.getAttributeValue(null, "block");
+					pre.tripTag = xpp.getAttributeValue(null, "tripTag");
+					predictions.add(pre);
+				}
+			}
+		}
+		return predictions;
+	}
+
 	public static String getRestUrlForRoutelist() {
 		return REST_URL_BASE + "&command=routeList";
 	}
@@ -243,16 +283,12 @@ public class RestClient {
 		return url.matches(".*&command=routeConfig.*") && url.matches(".*&r=.*");
 	}
 
-	public static String getRestUrlForPredictions(String stopid) {
-		return REST_URL_BASE + "&command=predictions&s=" + stopid;
-	}
-
 	public static boolean isRestUrlForPredictionswithStopArgument(String url) {
 		return url.matches(".*&command=predictions.*") && url.matches(".*&s=.*") && (url.matches(".*&r=") == false);
 	}
 
-	public static String getRestUrlForPredictions(String stopid, String routeTag) {
-		return REST_URL_BASE + "&command=predictions&s=" + stopid + "&r=" + routeTag;
+	public static String getRestUrlForPredictions(String stopTag, String routeTag) {
+		return REST_URL_BASE + "&command=predictions&s=" + stopTag + "&r=" + routeTag;
 	}
 
 	public static boolean isRestUrlForPredictionswithStopAndRoutetagArguments(String url) {
