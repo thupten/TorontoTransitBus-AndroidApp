@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,15 +22,17 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -43,23 +47,27 @@ import com.thuptencho.torontotransitbus.utilities.MyLogger;
 public class RouteDetailFragmentActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private TextView mTVTitle = null;
 
-	private SimpleCursorAdapter mDirectionAdapter = null;
+	private CustomSimpleCursorAdapter mDirectionAdapter = null;
 
 	private Spinner mDirectionsSpinner = null;
 
 	private Button mBtnGo = null;
 
+	private Context context = null;
+
 	private TableRow resultRow = null;
 
-	private String mRouteTag;
+	private String mRouteTag = "";
+
+	private String mDirectionTag = "";
 
 	private String mStopTag = "";
 
-	private SimpleCursorAdapter mStopsAdapter = null;
+	ProgressBar progressBar = null;
+
+	private CustomSimpleCursorAdapter mStopsAdapter = null;
 
 	private Spinner mStopsSpinner = null;
-
-	private TextView tv = null;
 
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 
@@ -77,7 +85,10 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 				String condition = "(" + Direction.KEY_ROUTE__TAG + "='" + mRouteTag + "')AND("
 								+ Direction.KEY_USEFORUI + "='true')";
 				Cursor c = getContentResolver().query(C.ContentUri.DIRECTION, projection, condition, null, null);
-				mDirectionAdapter.swapCursor(c);
+				MatrixCursor chooseOne = new MatrixCursor(projection);
+				chooseOne.addRow(new Object[] { -999, "Choose Direction", "Choose Direction" });
+				Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, c });
+				mDirectionAdapter.swapCursor(newCursor);
 			}
 			else if (action.equals(C.Broadcast.D_STOPS_UPDATED_ACTION)) {
 
@@ -93,6 +104,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		MyLogger.log("oncreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_detail);
 		Intent i = getIntent();
@@ -112,21 +124,35 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 		getSupportLoaderManager().initLoader(2, null, this);
 
+		setupView();
+
+	}
+
+	private void setupView() {
+
 		mDirectionsSpinner = (Spinner) findViewById(R.id.spinnerDirections);
 
-		mDirectionAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.spinner_layout1, null,
-						new String[] { Direction.KEY_NAME, Direction.KEY_TITLE }, new int[] { R.id.spinner_item1,
-										R.id.spinner_item2 }, 0);
+		mDirectionAdapter = new CustomSimpleCursorAdapter(this, R.layout.spinner_layout1, null, new String[] {
+						Direction.KEY_NAME, Direction.KEY_TITLE },
+						new int[] { R.id.spinner_item1, R.id.spinner_item2 }, 0);
+
 		mDirectionAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_directions);
+
 		mDirectionsSpinner.setAdapter(mDirectionAdapter);
+
 		mDirectionsSpinner.setOnItemSelectedListener(listener);
 
 		mStopsSpinner = (Spinner) findViewById(R.id.spinnerStops);
-		mStopsAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.spinner_layout1, null, new String[] {
+
+		mStopsSpinner.setOnItemSelectedListener(listener);
+
+		mStopsAdapter = new CustomSimpleCursorAdapter(this, R.layout.spinner_layout1, null, new String[] {
 						Stop.KEY_TAG, Stop.KEY_TITLE }, new int[] { R.id.spinner_item1, R.id.spinner_item2 }, 0);
 		mStopsAdapter.setDropDownViewResource(R.layout.spinner_dropdownlayout_stops);
+
 		mStopsSpinner.setAdapter(mStopsAdapter);
-		mStopsSpinner.setOnItemSelectedListener(listener);
+
+		mStopsSpinner.setEnabled(false);
 
 		mBtnGo = (Button) findViewById(R.id.btnSubmit);
 
@@ -134,28 +160,10 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 		resultRow = (TableRow) findViewById(R.id.table_row_result);
 
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+		progressBar.setVisibility(ProgressBar.INVISIBLE);
+
 	}
-
-	android.view.View.OnClickListener btnListener = new android.view.View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			if (!mRouteTag.isEmpty() && !mStopTag.isEmpty()) {
-				new PredictionsAsyncTask() {
-					@Override
-					protected void onPostExecute(List<Prediction> predictions) {
-						for (Prediction p : predictions) {
-							TextView tv = new TextView(getBaseContext());
-							tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-							tv.setText(p.minutes + " minutes");
-							resultRow.addView(tv);
-						}
-					}
-				}.execute(new String[] { mRouteTag, mStopTag });
-			}
-
-		}
-	};
 
 	private OnItemSelectedListener listener = new OnItemSelectedListener() {
 
@@ -163,17 +171,23 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			switch (parent.getId()) {
 			case R.id.spinnerDirections:
+				mStopsSpinner.setEnabled(true);
 				Cursor dCursor = getContentResolver().query(C.ContentUri.DIRECTION, new String[] { Direction.KEY_TAG },
 								"_id=" + id, null, null);
-				dCursor.moveToFirst();
-				String dTag = dCursor.getString(0);
 
-				Cursor stopsCursor = getContentResolver().query(
-								C.ContentUri.STOP,
-								new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG,
-												"Stops." + Stop.KEY_TITLE },
-								"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + dTag + "'", null, null);
-				mStopsAdapter.swapCursor(stopsCursor);
+				if (dCursor.getCount() > 0) {
+					dCursor.moveToFirst();
+					mDirectionTag = dCursor.getString(0);
+				}
+
+				String[] projections = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG,
+								"Stops." + Stop.KEY_TITLE };
+				Cursor stopsCursor = getContentResolver().query(C.ContentUri.STOP, projections,
+								"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + mDirectionTag + "'", null, null);
+				MatrixCursor chooseOne = new MatrixCursor(new String[] { "_id", "tag", "title" });
+				chooseOne.addRow(new Object[] { -999, "Choose Stop", "Choose Stop" });
+				Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, stopsCursor });
+				mStopsAdapter.swapCursor(newCursor);
 				mStopsAdapter.notifyDataSetChanged();
 				break;
 			case R.id.spinnerStops:
@@ -182,8 +196,10 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 								new String[] { C.Db.TABLE_STOPS + "." + Stop.KEY_TITLE,
 												C.Db.TABLE_STOPS + "." + Stop.KEY_TAG }, "Stops._id=" + id, null, null);
 				stopCursor.moveToFirst();
-				mStopTag = stopCursor.getString(stopCursor.getColumnIndex(Stop.KEY_TAG));
-
+				int columnIndex = stopCursor.getColumnIndex(Stop.KEY_TAG);
+				if (stopCursor.getCount() > 0) {
+					mStopTag = stopCursor.getString(columnIndex);
+				}
 				MyLogger.log("Stop Selected v");
 				MyLogger.log(stopCursor);
 				break;
@@ -208,7 +224,11 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 			mTVTitle.setText(routeTitle);
 			break;
 		case 2:
-			this.mDirectionAdapter.swapCursor(cursor);
+			String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
+			MatrixCursor chooseOne = new MatrixCursor(projection);
+			chooseOne.addRow(new Object[] { -999, "Choose Direction", "Choose Direction" });
+			Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, cursor });
+			mDirectionAdapter.swapCursor(newCursor);
 			break;
 		default:
 			break;
@@ -229,6 +249,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 							+ "='true')";
 			Loader<Cursor> cursorLoader2 = new CursorLoader(getApplicationContext(), C.ContentUri.DIRECTION,
 							projection, condition, null, null);
+
 			return cursorLoader2;
 		default:
 			break;
@@ -250,17 +271,59 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	}
 
+	android.view.View.OnClickListener btnListener = new android.view.View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			resultRow.removeAllViews();
+			final TableLayout tableLayout = new TableLayout(getBaseContext());
+			if (!mDirectionTag.isEmpty() && !mStopTag.isEmpty()) {
+				new PredictionsAsyncTask() {
+
+					@Override
+					protected void onPostExecute(List<Prediction> predictions) {
+						progressBar.setVisibility(ProgressBar.GONE);
+						for (Prediction p : predictions) {
+							TextView tv = new TextView(getBaseContext());
+							tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+							tv.setText("Route " + p.branch + "           " + p.minutes + " minutes");
+							TableRow tr = new TableRow(getBaseContext());
+							tr.addView(tv);
+							tableLayout.addView(tr);
+						}
+						resultRow.addView(tableLayout);
+					}
+				}.execute(new String[] { mRouteTag, mStopTag });
+			}
+			else {
+				if (mDirectionTag.isEmpty()) {
+					doBounce(mDirectionsSpinner);
+				}
+				if (mStopTag.isEmpty()) {
+					doBounce(mStopsSpinner);
+				}
+			}
+
+		}
+	};
+
+	private void doBounce(Spinner s) {
+		Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
+		s.startAnimation(animation);
+	}
+
 	private class PredictionsAsyncTask extends AsyncTask<String, Integer, List<Prediction>> {
 
 		@Override
-		protected void onProgressUpdate(Integer... values) {
-			super.onProgressUpdate(values);
+		protected void onPreExecute() {
+			progressBar.setVisibility(ProgressBar.VISIBLE);
 		}
 
 		@Override
 		protected List<Prediction> doInBackground(String... params) {
 			String routeTag = params[0];
 			String stopTag = params[1];
+			publishProgress(50);
 			List<Prediction> predictions = new ArrayList<Prediction>();
 			try {
 				predictions = RestClient.getPredictions(routeTag, stopTag);

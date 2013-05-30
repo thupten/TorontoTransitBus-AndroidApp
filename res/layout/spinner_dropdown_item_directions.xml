@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceLarge" 
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:singleLine="false"/>
@@ -20,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:textAppearance="?android:attr/textAppearanceLarge" 
         android:textColor="@android:color/black"
         android:singleLine="false"/>
 
