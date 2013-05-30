@@ -21,14 +21,18 @@
     </layouts>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56a535a3-63b5-4f55-918b-fa1633b6a836" name="Default" comment="" />
+    <list default="true" id="56a535a3-63b5-4f55-918b-fa1633b6a836" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\thupten\workspace\TorontoTransitBus\src\com\thuptencho\torontotransitbus\routes\RouteDetailFragment.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java" afterPath="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="TorontoTransitBus.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/fragment.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369175410720" ignored="false" />
+    <file path="/fragment.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369859895922" ignored="false" />
     <file path="/TheContentProvider.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369089719067" ignored="false" />
     <file path="/Constants.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369076557232" ignored="false" />
     <file path="/ServiceHelper.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369089587037" ignored="false" />
-    <file path="/Dummy.txt" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369352998055" ignored="false" />
+    <file path="/Dummy.txt" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369859351747" ignored="false" />
     <file path="/RouteDetailActivity.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369239643970" ignored="false" />
     <file path="/a.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369240418919" ignored="false" />
     <file path="/sample.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369240342301" ignored="false" />
@@ -36,6 +40,9 @@
     <file path="/a.xml" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369268154461" ignored="false" />
     <file path="/strings.xml" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369268209075" ignored="false" />
     <file path="/activity_route_detail.xml" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369269166495" ignored="false" />
+    <file path="$APPLICATION_HOME_DIR$/plugins/android/lib/android.jar!/org/jetbrains/android/android.xsd" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369859388153" ignored="false" />
+    <file path="/RestClient.java" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369860595440" ignored="false" />
+    <file path="/a.dummy" changelist="56a535a3-63b5-4f55-918b-fa1633b6a836" time="1369860257820" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +50,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
@@ -87,6 +99,23 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java" line="230" class="com.thuptencho.torontotransitbus.backgroundservice.RestClient" package="com.thuptencho.torontotransitbus.backgroundservice">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -96,17 +125,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="activity_route_detail.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/activity_route_detail.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
+      <file leaf-file-name="RouteDetailFragmentActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailFragmentActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="0" selection-start="483" selection-end="483" vertical-scroll-proportion="0.22972973">
+            <state line="39" column="13" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RestClient.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="249" column="0" selection-start="11259" selection-end="11259" vertical-scroll-proportion="1.2718894">
               <folding>
-                <element signature="e#1035#1061#0" expanded="true" />
-                <element signature="e#1723#1743#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1152#1480#0" expanded="true" />
+                <element signature="e#1468#1469#0" expanded="true" />
+                <element signature="e#1526#2372#0" expanded="true" />
+                <element signature="e#2360#2361#0" expanded="true" />
+                <element signature="e#3176#3183#0" expanded="true" />
+                <element signature="e#10050#10062#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyLogger.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/utilities/MyLogger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="0" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Log.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/util/Log.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="22" selection-start="2093" selection-end="2093" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StringBuilder.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/java/lang/StringBuilder.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="11" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -138,13 +205,17 @@
         <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/models/Route.java" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/res/layout/activity_route_detail.xml" />
+        <option value="$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java" />
       </list>
     </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
+    <option name="width" value="1932" />
     <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -158,10 +229,16 @@
             <id>Android Lint</id>
           </State>
           <State>
+            <id>Code maturity issues</id>
+          </State>
+          <State>
             <id>Code style issues</id>
           </State>
           <State>
             <id>Data flow issues</id>
+          </State>
+          <State>
+            <id>Error handling</id>
           </State>
           <State>
             <id>GPath inspectionsGroovy</id>
@@ -173,10 +250,16 @@
             <id>Groovy</id>
           </State>
           <State>
+            <id>J2ME issues</id>
+          </State>
+          <State>
             <id>JUnit issues</id>
           </State>
           <State>
             <id>Java language level migration aids</id>
+          </State>
+          <State>
+            <id>Logging issues</id>
           </State>
           <State>
             <id>Naming ConventionsGroovy</id>
@@ -196,7 +279,15 @@
           <State>
             <id>Probable bugsGroovy</id>
           </State>
+          <State>
+            <id>Threading issues</id>
+          </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>
@@ -226,41 +317,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TorontoTransitBus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TorontoTransitBus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TorontoTransitBus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TorontoTransitBus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TorontoTransitBus" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -289,6 +345,103 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torontotransitbus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torontotransitbus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="routes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torontotransitbus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="backgroundservice" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TorontoTransitBus" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -299,7 +452,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="preferences.sourceCode.XML" />
+    <property name="options.lastSelected" value="Errors" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="004a768889929140" />
@@ -473,6 +626,8 @@
       <workItem from="1369240597499" duration="634000" />
       <workItem from="1369267623516" duration="1587000" />
       <workItem from="1369352457257" duration="1041000" />
+      <workItem from="1369859242505" duration="45000" />
+      <workItem from="1369859346693" duration="1434000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1369353000034</created>
@@ -482,35 +637,35 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17610000" />
+    <option name="totallyTimeSpent" value="19089000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1932" height="1056" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2359375" sideWeight="0.67099565" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23590814" sideWeight="0.67099565" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32900432" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48832035" sideWeight="0.7673797" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.48832035" sideWeight="0.23262031" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17290458" sideWeight="0.3926585" order="2" side_tool="true" content_ui="tabs" x="46" y="577" width="325" height="346" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.32925472" sideWeight="0.67700535" order="10" side_tool="false" content_ui="tabs" x="49" y="1141" width="1181" height="633" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17791077" sideWeight="0.6704417" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994652" sideWeight="0.54949945" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14895834" sideWeight="0.67099565" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25652668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.22580644" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="92" y="92" width="1736" height="856" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19411765" sideWeight="0.51167965" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45050055" sideWeight="0.6994652" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3276414" sideWeight="0.6703663" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.22580644" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="92" y="92" width="1736" height="856" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32870865" sideWeight="0.6703663" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -582,21 +737,6 @@
         <state line="15" column="58" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="35" selection-start="156" selection-end="156" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="52" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="43" selection-start="1265" selection-end="1265" vertical-scroll-proportion="-2.4754357" />
@@ -632,39 +772,65 @@
         <state line="115" column="39" selection-start="4074" selection-end="4074" vertical-scroll-proportion="0.019428572" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RoutesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="5" selection-start="2146" selection-end="2146" vertical-scroll-proportion="0.3977143" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="2175" selection-end="2175" vertical-scroll-proportion="0.49485713" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="22" selection-start="611" selection-end="611" vertical-scroll-proportion="0.26820388">
+        <state line="13" column="22" selection-start="611" selection-end="611" vertical-scroll-proportion="0.26820388" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_route_detail.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="553" selection-end="553" vertical-scroll-proportion="0.032818533">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/routes/RouteDetailFragmentActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="13" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/activity_route_detail.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/java/lang/StringBuilder.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="483" selection-end="483" vertical-scroll-proportion="0.22972973">
+        <state line="7" column="11" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/util/Log.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="22" selection-start="2093" selection-end="2093" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/utilities/MyLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/thuptencho/torontotransitbus/backgroundservice/RestClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="249" column="0" selection-start="11259" selection-end="11259" vertical-scroll-proportion="1.2718894">
           <folding>
-            <element signature="e#1035#1061#0" expanded="true" />
-            <element signature="e#1723#1743#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1152#1480#0" expanded="true" />
+            <element signature="e#1468#1469#0" expanded="true" />
+            <element signature="e#1526#2372#0" expanded="true" />
+            <element signature="e#2360#2361#0" expanded="true" />
+            <element signature="e#3176#3183#0" expanded="true" />
+            <element signature="e#10050#10062#0" expanded="true" />
           </folding>
         </state>
       </provider>

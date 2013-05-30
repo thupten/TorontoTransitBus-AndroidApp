@@ -21,12 +21,15 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.thuptencho.torontotransitbus.C;
@@ -39,21 +42,24 @@ import com.thuptencho.torontotransitbus.utilities.MyLogger;
 
 public class RouteDetailFragmentActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private TextView mTVTitle = null;
+
 	private SimpleCursorAdapter mDirectionAdapter = null;
+
 	private Spinner mDirectionsSpinner = null;
+
 	private Button mBtnGo = null;
-	private TextView mResultDesc1 = null;
-	private TextView mResultDesc2 = null;
-	private TextView mResultDesc0 = null;
-	private TextView mResultTime1 = null;
-	private TextView mResultTime2 = null;
-	private TextView mResultTime0 = null;
+
+	private TableRow resultRow = null;
 
 	private String mRouteTag;
+
 	private String mStopTag = "";
 
 	private SimpleCursorAdapter mStopsAdapter = null;
+
 	private Spinner mStopsSpinner = null;
+
+	private TextView tv = null;
 
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 
@@ -69,7 +75,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 			else if (action.equals(C.Broadcast.DIRECTIONS_UPDATED_ACTION)) {
 				String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
 				String condition = "(" + Direction.KEY_ROUTE__TAG + "='" + mRouteTag + "')AND("
-						+ Direction.KEY_USEFORUI + "='true')";
+								+ Direction.KEY_USEFORUI + "='true')";
 				Cursor c = getContentResolver().query(C.ContentUri.DIRECTION, projection, condition, null, null);
 				mDirectionAdapter.swapCursor(c);
 			}
@@ -88,19 +94,19 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_route_detail);
 		Intent i = getIntent();
 		mRouteTag = i.getStringExtra("routeTag");
 		// mRoute = new Route();
 
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-				new IntentFilter(C.Broadcast.ROUTES_SINGLE_UPDATED_ACTION));
+						new IntentFilter(C.Broadcast.ROUTES_SINGLE_UPDATED_ACTION));
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-				new IntentFilter(C.Broadcast.DIRECTIONS_UPDATED_ACTION));
+						new IntentFilter(C.Broadcast.DIRECTIONS_UPDATED_ACTION));
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-				new IntentFilter(C.Broadcast.D_STOPS_UPDATED_ACTION));
+						new IntentFilter(C.Broadcast.D_STOPS_UPDATED_ACTION));
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-				new IntentFilter(C.Broadcast.R_STOPS_UPDATED_ACTION));
-		setContentView(R.layout.activity_route_detail);
+						new IntentFilter(C.Broadcast.R_STOPS_UPDATED_ACTION));
 
 		getSupportLoaderManager().initLoader(1, null, this);
 
@@ -109,15 +115,15 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		mDirectionsSpinner = (Spinner) findViewById(R.id.spinnerDirections);
 
 		mDirectionAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.spinner_layout1, null,
-				new String[] { Direction.KEY_NAME, Direction.KEY_TITLE }, new int[] { R.id.spinner_item1,
-						R.id.spinner_item2 }, 0);
+						new String[] { Direction.KEY_NAME, Direction.KEY_TITLE }, new int[] { R.id.spinner_item1,
+										R.id.spinner_item2 }, 0);
 		mDirectionAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_directions);
 		mDirectionsSpinner.setAdapter(mDirectionAdapter);
 		mDirectionsSpinner.setOnItemSelectedListener(listener);
 
 		mStopsSpinner = (Spinner) findViewById(R.id.spinnerStops);
 		mStopsAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.spinner_layout1, null, new String[] {
-				Stop.KEY_TAG, Stop.KEY_TITLE }, new int[] { R.id.spinner_item1, R.id.spinner_item2 }, 0);
+						Stop.KEY_TAG, Stop.KEY_TITLE }, new int[] { R.id.spinner_item1, R.id.spinner_item2 }, 0);
 		mStopsAdapter.setDropDownViewResource(R.layout.spinner_dropdownlayout_stops);
 		mStopsSpinner.setAdapter(mStopsAdapter);
 		mStopsSpinner.setOnItemSelectedListener(listener);
@@ -126,12 +132,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 		mBtnGo.setOnClickListener(btnListener);
 
-		mResultDesc0 = (TextView) findViewById(R.id.next_bus_desc_0);
-		mResultDesc1 = (TextView) findViewById(R.id.next_bus_desc_1);
-		mResultDesc2 = (TextView) findViewById(R.id.next_bus_desc_2);
-		mResultTime0 = (TextView) findViewById(R.id.next_bus_time_0);
-		mResultTime1 = (TextView) findViewById(R.id.next_bus_time_1);
-		mResultTime2 = (TextView) findViewById(R.id.next_bus_time_2);
+		resultRow = (TableRow) findViewById(R.id.table_row_result);
 
 	}
 
@@ -143,15 +144,12 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 				new PredictionsAsyncTask() {
 					@Override
 					protected void onPostExecute(List<Prediction> predictions) {
-						super.onPostExecute(predictions);
-						mResultTime0.setText(predictions.get(0).minutes);
-						mResultTime1.setText(predictions.get(1).minutes);
-						mResultTime2.setText(predictions.get(2).minutes);
-
-						mResultTime0.setText(predictions.get(0).minutes);
-						mResultTime1.setText(predictions.get(1).minutes);
-						mResultTime2.setText(predictions.get(2).minutes);
-
+						for (Prediction p : predictions) {
+							TextView tv = new TextView(getBaseContext());
+							tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+							tv.setText(p.minutes + " minutes");
+							resultRow.addView(tv);
+						}
 					}
 				}.execute(new String[] { mRouteTag, mStopTag });
 			}
@@ -166,21 +164,23 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 			switch (parent.getId()) {
 			case R.id.spinnerDirections:
 				Cursor dCursor = getContentResolver().query(C.ContentUri.DIRECTION, new String[] { Direction.KEY_TAG },
-						"_id=" + id, null, null);
+								"_id=" + id, null, null);
 				dCursor.moveToFirst();
 				String dTag = dCursor.getString(0);
 
-				Cursor stopsCursor = getContentResolver().query(C.ContentUri.STOP,
-						new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG, "Stops." + Stop.KEY_TITLE },
-						"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + dTag + "'", null, null);
+				Cursor stopsCursor = getContentResolver().query(
+								C.ContentUri.STOP,
+								new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG,
+												"Stops." + Stop.KEY_TITLE },
+								"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + dTag + "'", null, null);
 				mStopsAdapter.swapCursor(stopsCursor);
 				mStopsAdapter.notifyDataSetChanged();
 				break;
 			case R.id.spinnerStops:
-				Cursor stopCursor = getContentResolver()
-						.query(C.ContentUri.STOP,
+				Cursor stopCursor = getContentResolver().query(
+								C.ContentUri.STOP,
 								new String[] { C.Db.TABLE_STOPS + "." + Stop.KEY_TITLE,
-										C.Db.TABLE_STOPS + "." + Stop.KEY_TAG }, "Stops._id=" + id, null, null);
+												C.Db.TABLE_STOPS + "." + Stop.KEY_TAG }, "Stops._id=" + id, null, null);
 				stopCursor.moveToFirst();
 				mStopTag = stopCursor.getString(stopCursor.getColumnIndex(Stop.KEY_TAG));
 
@@ -221,14 +221,14 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		switch (id) {
 		case 1:
 			Loader<Cursor> cursorLoader1 = new CursorLoader(getApplicationContext(), Uri.withAppendedPath(
-					C.ContentUri.ROUTE, mRouteTag), new String[] { "_id", "tag", "title" }, null, null, null);
+							C.ContentUri.ROUTE, mRouteTag), new String[] { "_id", "tag", "title" }, null, null, null);
 			return cursorLoader1;
 		case 2:
 			String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
 			String condition = "(" + Direction.KEY_ROUTE__TAG + "='" + mRouteTag + "')AND(" + Direction.KEY_USEFORUI
-					+ "='true')";
+							+ "='true')";
 			Loader<Cursor> cursorLoader2 = new CursorLoader(getApplicationContext(), C.ContentUri.DIRECTION,
-					projection, condition, null, null);
+							projection, condition, null, null);
 			return cursorLoader2;
 		default:
 			break;
@@ -254,7 +254,6 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 		@Override
 		protected void onProgressUpdate(Integer... values) {
-			// TODO Auto-generated method stub
 			super.onProgressUpdate(values);
 		}
 

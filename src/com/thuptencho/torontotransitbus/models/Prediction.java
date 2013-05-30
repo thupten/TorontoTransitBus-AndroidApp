@@ -4,6 +4,9 @@ public class Prediction {
 	public String epochTime = "", seconds = "", minutes = "", isDeparture = "", affectedByLayover = "", branch = "",
 			dirTag = "", vehicle = "", block = "", tripTag = "";
 
+	public Prediction(){
+		super();
+	}
 	@Override
 	public String toString() {
 		return "epochTime:" + this.epochTime + " seconds:" + this.seconds + " minutes:" + this.minutes

@@ -43,75 +43,13 @@
         </TableRow>
 
         <TableRow >
-
             <Button android:id="@+id/btnSubmit"
                 android:text="Go"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:textSize="30sp"
-                />
+                android:textSize="30sp"/>
         </TableRow>
-        <TableRow android:layout_marginTop="20sp" >
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:text="@string/next3buses"
-                android:textSize="30sp" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10sp" >
-
-            <TextView
-                android:id="@+id/next_bus_desc_0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/next_bus_time_0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10sp" >
-
-            <TextView
-                android:id="@+id/next_bus_desc_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/next_bus_time_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10sp" >
-
-            <TextView
-                android:id="@+id/next_bus_desc_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/next_bus_time_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next3buses"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TableRow android:layout_marginTop="20sp" android:id="@+id/table_row_result">
         </TableRow>
     </TableLayout>
-
 </ScrollView>

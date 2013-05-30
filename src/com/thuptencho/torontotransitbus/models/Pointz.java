@@ -9,12 +9,14 @@ public class Pointz implements Parcelable{
 	public int mPath__Id=-1;
 
 	public Pointz(String lat, String lon, int path__Id) {
+		super();
 		this.mLat = lat;
 		this.mLon = lon;
 		this.mPath__Id = path__Id;
 	}
 
 	public Pointz() {
+		super();
 	}
 
 	@Override

@@ -1,18 +1,8 @@
 package com.thuptencho.torontotransitbus.backgroundservice;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
+import com.thuptencho.torontotransitbus.models.*;
+import com.thuptencho.torontotransitbus.utilities.MyLogger;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.GzipDecompressingEntity;
@@ -24,312 +14,310 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import android.os.AsyncTask;
-
-import com.thuptencho.torontotransitbus.models.Direction;
-import com.thuptencho.torontotransitbus.models.Pathz;
-import com.thuptencho.torontotransitbus.models.Pointz;
-import com.thuptencho.torontotransitbus.models.Prediction;
-import com.thuptencho.torontotransitbus.models.Route;
-import com.thuptencho.torontotransitbus.models.Stop;
-import com.thuptencho.torontotransitbus.utilities.MyLogger;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestClient {
-	private static final String REST_URL_BASE = "http://webservices.nextbus.com/service/publicXMLFeed?a=ttc";
+    private static final String REST_URL_BASE = "http://webservices.nextbus.com/service/publicXMLFeed?a=ttc";
 
-	private static String getContentFromUrl(String urlString) throws ClientProtocolException, IOException {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+    private static String getContentFromUrl(String urlString) throws ClientProtocolException, IOException {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
 
-		httpClient.addRequestInterceptor(new HttpRequestInterceptor() {
+        httpClient.addRequestInterceptor(new HttpRequestInterceptor() {
 
-			public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
-				if (!request.containsHeader("Accept-Encoding")) {
-					request.addHeader("Accept-Encoding", "gzip");
-				}
-			}
+            public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+                if (!request.containsHeader("Accept-Encoding")) {
+                    request.addHeader("Accept-Encoding", "gzip");
+                }
+            }
 
-		});
+        });
 
-		httpClient.addResponseInterceptor(new HttpResponseInterceptor() {
+        httpClient.addResponseInterceptor(new HttpResponseInterceptor() {
 
-			public void process(final HttpResponse response, final HttpContext context) throws HttpException,
-					IOException {
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					Header ceheader = entity.getContentEncoding();
-					if (ceheader != null) {
-						HeaderElement[] codecs = ceheader.getElements();
-						for (int i = 0; i < codecs.length; i++) {
-							if (codecs[i].getName().equalsIgnoreCase("gzip")) {
-								response.setEntity(new GzipDecompressingEntity(response.getEntity()));
-								return;
-							}
-						}
-					}
-				}
-			}
+            public void process(final HttpResponse response, final HttpContext context) throws HttpException, IOException {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    Header ceheader = entity.getContentEncoding();
+                    if (ceheader != null) {
+                        HeaderElement[] codecs = ceheader.getElements();
+                        for (int i = 0; i < codecs.length; i++) {
+                            if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                                response.setEntity(new GzipDecompressingEntity(response.getEntity()));
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
 
-		});
-		try {
+        });
+        try {
 
-			MyLogger.log("GET: " + urlString);
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            MyLogger.log("GET: " + urlString);
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
-			HttpGet httpget = new HttpGet(urlString);
-			String responseBody = httpClient.execute(httpget, responseHandler);
-			return responseBody;
+            HttpGet httpget = new HttpGet(urlString);
+            String responseBody = httpClient.execute(httpget, responseHandler);
+            return responseBody;
 
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
+        } finally {
+            httpClient.getConnectionManager().shutdown();
+        }
 
-	}
+    }
 
-	/*
-	 * ONLY a service should call this method ..should call insert/update on
-	 * provider in the end of this method
-	 */
-	public static List<Route> getRoutes() throws XmlPullParserException, IOException {
+    /*
+     * ONLY a service should call this method ..should call insert/update on
+     * provider in the end of this method
+     */
+    public static List<Route> getRoutes() throws XmlPullParserException, IOException {
 
-		String urlString = RestClient.getRestUrlForRoutelist();
+        String urlString = RestClient.getRestUrlForRoutelist();
 
-		String str = RestClient.getContentFromUrl(urlString);
+        String str = RestClient.getContentFromUrl(urlString);
 
-		List<Route> routes = new ArrayList<Route>();
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
-		xpp.setInput(new StringReader(str));
+        List<Route> routes = new ArrayList<Route>();
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        XmlPullParser xpp = factory.newPullParser();
+        xpp.setInput(new StringReader(str));
 
-		int eventType = xpp.getEventType();
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			switch (eventType) {
-			case XmlPullParser.START_TAG:
-				String tagname = xpp.getName().toString();
-				String routeString = "route";
-				if (tagname.equalsIgnoreCase(routeString)) {
-					// found all route tags, get their attributes and values.
-					String tag = xpp.getAttributeValue(null, "tag");
-					String title = xpp.getAttributeValue(null, "title");
-					Route r = new Route();
-					r.mTag = tag;
-					r.mTitle = title;
-					routes.add(r);
-				}
-				break;
-			default://
-			}
-			eventType = xpp.next();
-		}
-		return routes;
-	}
+        int eventType = xpp.getEventType();
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    String tagname = xpp.getName().toString();
+                    String routeString = "route";
+                    if (tagname.equalsIgnoreCase(routeString)) {
+                        // found all route tags, get their attributes and values.
+                        String tag = xpp.getAttributeValue(null, "tag");
+                        String title = xpp.getAttributeValue(null, "title");
+                        Route r = new Route();
+                        r.mTag = tag;
+                        r.mTitle = title;
+                        routes.add(r);
+                    }
+                    break;
+                default://
+            }
+            eventType = xpp.next();
+        }
+        return routes;
+    }
 
-	/* ONLY a service should call this method */
-	// public static Route getRouteDetail(String urlString)
-	public static Route getRouteDetail(String routeTag) throws ClientProtocolException, IOException,
-			XmlPullParserException {
-		String url = getRestUrlForRouteDetail(routeTag);
-		String str = getContentFromUrl(url);
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
-		xpp.setInput(new StringReader(str));
-		int eventType = xpp.getEventType();
+    /* ONLY a service should call this method */
+    // public static Route getRouteDetail(String urlString)
+    public static Route getRouteDetail(String routeTag) throws ClientProtocolException, IOException, XmlPullParserException {
+        String url = getRestUrlForRouteDetail(routeTag);
+        String str = getContentFromUrl(url);
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        XmlPullParser xpp = factory.newPullParser();
+        xpp.setInput(new StringReader(str));
+        int eventType = xpp.getEventType();
 
-		Route r = null;
-		Direction d = null;
-		Pathz path = null;
-		Stop s = null;
-		Pointz po = null;
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			switch (eventType) {
-			case XmlPullParser.START_TAG:
-				if (xpp.getName().equalsIgnoreCase("route")) {
-					r = new Route();
-					r.mTag = xpp.getAttributeValue(null, "tag");
-					r.mTitle = xpp.getAttributeValue(null, "title");
-					r.nColor = xpp.getAttributeValue(null, "color");
-					r.mOppositeColor = xpp.getAttributeValue(null, "oppositeColor");
-					r.mLatMin = xpp.getAttributeValue(null, "latMin");
-					r.mLatMax = xpp.getAttributeValue(null, "latMax");
-					r.mLonMin = xpp.getAttributeValue(null, "lonMin");
-					r.mLonMax = xpp.getAttributeValue(null, "lonMax");
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("stop")) {
-					s = new Stop();
-					s.mTag = xpp.getAttributeValue(null, "tag");
-					s.mTitle = xpp.getAttributeValue(null, "title");
-					s.mLat = xpp.getAttributeValue(null, "lat");
-					s.mLon = xpp.getAttributeValue(null, "lon");
-					s.mStopId = xpp.getAttributeValue(null, "stopId");
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("direction")) {
-					d = new Direction();
-					d.mTag = xpp.getAttributeValue(null, "tag");
-					d.mTitle = xpp.getAttributeValue(null, "title");
-					d.mName = xpp.getAttributeValue(null, "name");
-					d.mUseForUI = xpp.getAttributeValue(null, "useForUI");
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("path")) {
-					// assign to the parent 'route' tag
-					path = new Pathz();
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("point")) {
-					po = new Pointz();
-					po.mLat = xpp.getAttributeValue(null, "lat");
-					po.mLon = xpp.getAttributeValue(null, "lon");
-					break;
-				}
-				break;
+        Route r = null;
+        Direction d = null;
+        Pathz path = null;
+        Stop s = null;
+        Pointz po = null;
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    if (xpp.getName().equalsIgnoreCase("route")) {
+                        r = new Route();
+                        r.mTag = xpp.getAttributeValue(null, "tag");
+                        r.mTitle = xpp.getAttributeValue(null, "title");
+                        r.nColor = xpp.getAttributeValue(null, "color");
+                        r.mOppositeColor = xpp.getAttributeValue(null, "oppositeColor");
+                        r.mLatMin = xpp.getAttributeValue(null, "latMin");
+                        r.mLatMax = xpp.getAttributeValue(null, "latMax");
+                        r.mLonMin = xpp.getAttributeValue(null, "lonMin");
+                        r.mLonMax = xpp.getAttributeValue(null, "lonMax");
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("stop")) {
+                        s = new Stop();
+                        s.mTag = xpp.getAttributeValue(null, "tag");
+                        s.mTitle = xpp.getAttributeValue(null, "title");
+                        s.mLat = xpp.getAttributeValue(null, "lat");
+                        s.mLon = xpp.getAttributeValue(null, "lon");
+                        s.mStopId = xpp.getAttributeValue(null, "stopId");
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("direction")) {
+                        d = new Direction();
+                        d.mTag = xpp.getAttributeValue(null, "tag");
+                        d.mTitle = xpp.getAttributeValue(null, "title");
+                        d.mName = xpp.getAttributeValue(null, "name");
+                        d.mUseForUI = xpp.getAttributeValue(null, "useForUI");
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("path")) {
+                        // assign to the parent 'route' tag
+                        path = new Pathz();
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("point")) {
+                        po = new Pointz();
+                        po.mLat = xpp.getAttributeValue(null, "lat");
+                        po.mLon = xpp.getAttributeValue(null, "lon");
+                        break;
+                    }
+                    break;
 
-			case XmlPullParser.END_TAG:
-				if (xpp.getName().equalsIgnoreCase("point")) {
-					if (po != null && path != null) path.mPoints.add(po);
-					po = null; // important to reset to null.
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("path")) {
-					// assign to the parent 'route' tag
-					if (path != null && r != null) r.mPaths.add(path);
-					path = null;
-					break;
-				}
+                case XmlPullParser.END_TAG:
+                    if (xpp.getName().equalsIgnoreCase("point")) {
+                        if (po != null && path != null) path.mPoints.add(po);
+                        po = null; // important to reset to null.
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("path")) {
+                        // assign to the parent 'route' tag
+                        if (path != null && r != null) r.mPaths.add(path);
+                        path = null;
+                        break;
+                    }
 
-				else if (xpp.getName().equalsIgnoreCase("direction")) {
-					if (d != null && r != null) r.mDirections.add(d);
-					d = null;
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("stop")) {
-					// to know whether this stop tag is child of route or
-					// direction. we check if the parent are null or not.
-					if (s != null && r != null) {
-						if (d == null) {
-							r.mStops.add(s);
-						}
-						else if (d != null) {
-							d.mStops.add(s);
-						}
-					}
-					s = null;
-					break;
-				}
-				else if (xpp.getName().equalsIgnoreCase("route")) {
-					// end of route tag. no need to further process. this route
-					// has all the details of its decendents.
-					return r;
-				}
-				break;
+                    else if (xpp.getName().equalsIgnoreCase("direction")) {
+                        if (d != null && r != null) r.mDirections.add(d);
+                        d = null;
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("stop")) {
+                        // to know whether this stop tag is child of route or
+                        // direction. we check if the parent are null or not.
+                        if (s != null && r != null) {
+                            if (d == null) {
+                                r.mStops.add(s);
+                            }
+                            else if (d != null) {
+                                d.mStops.add(s);
+                            }
+                        }
+                        s = null;
+                        break;
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("route")) {
+                        // end of route tag. no need to further process. this route
+                        // has all the details of its decendents.
+                        return r;
+                    }
+                    break;
 
-			default:
-				break;
+                default:
+                    break;
 
-			}
-			eventType = xpp.next();
-		}
+            }
+            eventType = xpp.next();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static List<Prediction> getPredictions(String routeTag, String stopTag) throws ClientProtocolException,
-			IOException, XmlPullParserException {
-		String url = getRestUrlForPredictions(stopTag, routeTag);
-		String predictionContent = RestClient.getContentFromUrl(url);
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
-		xpp.setInput(new StringReader(predictionContent));
-		int eventType = xpp.getEventType();
-		List<Prediction> predictions = new ArrayList<Prediction>();
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			switch (eventType) {
-			case XmlPullParser.START_TAG:
-				if (xpp.getName().equalsIgnoreCase("prediction")) {
-					Prediction pre = new Prediction();
-					pre.epochTime = xpp.getAttributeValue(null, "epochTime");
-					pre.seconds = xpp.getAttributeValue(null, "seconds");
-					pre.minutes = xpp.getAttributeValue(null, "minutes");
-					pre.isDeparture = xpp.getAttributeValue(null, "isDeparture");
-					pre.affectedByLayover = xpp.getAttributeValue(null, "affectedByLayover");
-					pre.branch = xpp.getAttributeValue(null, "branch");
-					pre.dirTag = xpp.getAttributeValue(null, "dirTag");
-					pre.vehicle = xpp.getAttributeValue(null, "vehicle");
-					pre.block = xpp.getAttributeValue(null, "block");
-					pre.tripTag = xpp.getAttributeValue(null, "tripTag");
-					predictions.add(pre);
-				}
-			}
-		}
-		
-		return predictions;
-	}
+    public static List<Prediction> getPredictions(String routeTag, String stopTag) throws ClientProtocolException, IOException, XmlPullParserException {
+        String url = getRestUrlForPredictions(stopTag, routeTag);
+        String predictionContent = RestClient.getContentFromUrl(url);
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        XmlPullParser xpp = factory.newPullParser();
+        xpp.setInput(new StringReader(predictionContent));
+        int eventType = xpp.getEventType();
+        List<Prediction> predictions = new ArrayList<Prediction>();
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    if (xpp.getName().equalsIgnoreCase("prediction")) {
+                        Prediction pre = new Prediction();
+                        pre.epochTime = xpp.getAttributeValue(null, "epochTime");
+                        pre.seconds = xpp.getAttributeValue(null, "seconds");
+                        pre.minutes = xpp.getAttributeValue(null, "minutes");
+                        pre.isDeparture = xpp.getAttributeValue(null, "isDeparture");
+                        pre.affectedByLayover = xpp.getAttributeValue(null, "affectedByLayover");
+                        pre.branch = xpp.getAttributeValue(null, "branch");
+                        pre.dirTag = xpp.getAttributeValue(null, "dirTag");
+                        pre.vehicle = xpp.getAttributeValue(null, "vehicle");
+                        pre.block = xpp.getAttributeValue(null, "block");
+                        pre.tripTag = xpp.getAttributeValue(null, "tripTag");
+                        predictions.add(pre);
+                    }
+                    break;
 
-	public static String getRestUrlForRoutelist() {
-		return REST_URL_BASE + "&command=routeList";
-	}
+                default:
+                    break;
+            }
+            eventType = xpp.next();
 
-	public static boolean isRestUrlForRoutelist(String url) {
-		return url.matches(".*&command=routeList$");
-	}
+        }
 
-	public static String getRestUrlForRouteDetail(String routeTag) {
-		return REST_URL_BASE + "&command=routeConfig&r=" + routeTag;
-	}
+        return predictions;
+    }
 
-	public static boolean isRestUrlForRouteDetail(String url) {
-		return url.matches(".*&command=routeConfig.*") && url.matches(".*&r=.*");
-	}
+    public static String getRestUrlForRoutelist() {
+        return REST_URL_BASE + "&command=routeList";
+    }
 
-	public static boolean isRestUrlForPredictionswithStopArgument(String url) {
-		return url.matches(".*&command=predictions.*") && url.matches(".*&s=.*") && (url.matches(".*&r=") == false);
-	}
+    public static boolean isRestUrlForRoutelist(String url) {
+        return url.matches(".*&command=routeList$");
+    }
 
-	public static String getRestUrlForPredictions(String stopTag, String routeTag) {
-		return REST_URL_BASE + "&command=predictions&s=" + stopTag + "&r=" + routeTag;
-	}
+    public static String getRestUrlForRouteDetail(String routeTag) {
+        return REST_URL_BASE + "&command=routeConfig&r=" + routeTag;
+    }
 
-	public static boolean isRestUrlForPredictionswithStopAndRoutetagArguments(String url) {
-		return url.matches(".*&command=predictions.*") && url.matches(".*&s=.*") && url.matches(".*&r=");
-	}
+    public static boolean isRestUrlForRouteDetail(String url) {
+        return url.matches(".*&command=routeConfig.*") && url.matches(".*&r=.*");
+    }
 
-	/*
-	 * parameter stops is a list of String in this format 'routetag|stopid' eg.
-	 * 1S|2425
-	 */
-	public static String getRestUrlForPredictionsForMultiStops(List<String> routeAndStops) {
-		String routeStopArgString = "";
-		for (String rs : routeAndStops) {
-			routeStopArgString = routeStopArgString + "&stops=" + rs;
-		}
-		return REST_URL_BASE + "command=predictionsForMultiStops" + routeStopArgString;
-	}
+    public static boolean isRestUrlForPredictionswithStopArgument(String url) {
+        return url.matches(".*&command=predictions.*") && url.matches(".*&s=.*") && (url.matches(".*&r=") == false);
+    }
 
-	public static boolean isRestUrlForPredictionsForMultiStops(String url) {
-		return url.matches(".*&command=predictions.*") && url.matches(".*&stops=.*");
-	}
+    public static String getRestUrlForPredictions(String stopTag, String routeTag) {
+        return REST_URL_BASE + "&command=predictions&s=" + stopTag + "&r=" + routeTag;
+    }
 
-	public static String getRestUrlForSchedule(String routeTag) {
-		return REST_URL_BASE + "command=schedule&r=" + routeTag;
-	}
+    public static boolean isRestUrlForPredictionswithStopAndRoutetagArguments(String url) {
+        return url.matches(".*&command=predictions.*") && url.matches(".*&s=.*") && url.matches(".*&r=");
+    }
 
-	public static boolean isRestUrlForSchedule(String url) {
-		return url.matches(".*&command=schedule.*") && url.matches(".*&r=.*");
-	}
+    /*
+     * parameter stops is a list of String in this format 'routetag|stopid' eg.
+     * 1S|2425
+     */
+    public static String getRestUrlForPredictionsForMultiStops(List<String> routeAndStops) {
+        String routeStopArgString = "";
+        for (String rs : routeAndStops) {
+            routeStopArgString = routeStopArgString + "&stops=" + rs;
+        }
+        return REST_URL_BASE + "command=predictionsForMultiStops" + routeStopArgString;
+    }
 
-	public static String getRestUrlForMessageForRoutes(List<String> routeTags) {
-		String argString = "";
-		for (String routeTag : routeTags) {
-			argString = argString + "&r=" + routeTag;
-		}
-		return REST_URL_BASE + "command=messages" + argString;
-	}
+    public static boolean isRestUrlForPredictionsForMultiStops(String url) {
+        return url.matches(".*&command=predictions.*") && url.matches(".*&stops=.*");
+    }
 
-	public static boolean isRestUrlForMessageForRoutes(String url) {
-		return url.matches(".*&command=messages.*") && url.matches(".*&r=.*");
-	}
+    public static String getRestUrlForSchedule(String routeTag) {
+        return REST_URL_BASE + "command=schedule&r=" + routeTag;
+    }
+
+    public static boolean isRestUrlForSchedule(String url) {
+        return url.matches(".*&command=schedule.*") && url.matches(".*&r=.*");
+    }
+
+    public static String getRestUrlForMessageForRoutes(List<String> routeTags) {
+        String argString = "";
+        for (String routeTag : routeTags) {
+            argString = argString + "&r=" + routeTag;
+        }
+        return REST_URL_BASE + "command=messages" + argString;
+    }
+
+    public static boolean isRestUrlForMessageForRoutes(String url) {
+        return url.matches(".*&command=messages.*") && url.matches(".*&r=.*");
+    }
 
 }
