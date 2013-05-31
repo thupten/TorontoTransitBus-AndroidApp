@@ -263,7 +263,15 @@ public class DatabaseUpdatingService extends IntentService {
 			messageIntent.putExtra("route_key", route.mTag);
 			LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 			break;
-
+		case DIRECTIONS:
+		case DIRECTIONS_SINGLE:
+			//todo
+			break;
+			
+		case STOPS:
+		case STOPS_SINGLE:
+			//todo
+			break;
 		default:
 			throw new IllegalArgumentException("illegal argument here. did'nt match anythign with " + uri.toString());
 

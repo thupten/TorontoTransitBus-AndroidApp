@@ -69,6 +69,25 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	private Spinner mStopsSpinner = null;
 
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		try {
+			if (mStopsAdapter != null) {
+
+				mStopsAdapter.getCursor().close();
+				mStopsAdapter = null;
+			}
+			if (mDirectionAdapter != null) {
+				mDirectionAdapter.getCursor().close();
+				mDirectionAdapter = null;
+			}
+		} catch (Exception e) {
+		}
+		super.onStop();
+
+	}
+
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 
 		@Override
