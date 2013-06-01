@@ -19,9 +19,11 @@ import com.thuptencho.torontotransitbus.backgroundservice.ServiceHelper;
 
 public class TheContentProvider extends ContentProvider {
 	private static UriMatcher uriMatcher;
+
 	private static final int ROUTES = 10, ROUTES_SINGLE = 11, DIRECTIONS = 20, DIRECTIONS_SINGLE = 21, STOPS = 30,
-			STOPS_SINGLE = 31, PATHS = 40, PATHS_SINGLE = 41, POINTS = 50, POINTS_SINGLE = 51, SCHEDULES = 60,
-			SCHEDULES_SINGLE = 61, PREDICTIONS = 70;
+					STOPS_SINGLE = 31, PATHS = 40, PATHS_SINGLE = 41, POINTS = 50, POINTS_SINGLE = 51, SCHEDULES = 60,
+					SCHEDULES_SINGLE = 61, PREDICTIONS = 70;
+
 	private MySQLiteOpenHelper mySqliteOpenHelper;
 
 	static {
@@ -43,6 +45,7 @@ public class TheContentProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
+		
 		mySqliteOpenHelper = new MySQLiteOpenHelper(getContext(), C.Db.DATABASE_NAME, null, C.Db.DATABASE_VERSION);
 		if (mySqliteOpenHelper == null) return false;
 		return true;
@@ -84,7 +87,7 @@ public class TheContentProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
-		
+
 		Cursor cursor = null;
 		String id;
 		switch (uriMatcher.match(uri)) {
@@ -149,67 +152,61 @@ public class TheContentProvider extends ContentProvider {
 	}
 
 	private Cursor queryPredictions(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
+					String sortOrder) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private Cursor queryRoutes(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
-		Cursor c = null;
-		SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
-		c = db.query(C.Db.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
-		return c;
+					String sortOrder) {
+		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
+		return db.query(C.Db.TABLE_ROUTES, columns, selection, selectionArguments, null, null, sortOrder);
 	}
 
 	private Cursor queryDirections(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
+					String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		Cursor c = null;
-		c = db.query(C.Db.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
-		return c;
+		return db.query(C.Db.TABLE_DIRECTIONS, columns, selection, selectionArguments, null, null, sortOrder);
 	}
 
 	private Cursor queryStopsForDirection(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
-		Cursor c = null;
+					String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		qb.setTables(C.Db.TABLE_DIRECTIONS_STOPS + " INNER JOIN " + C.Db.TABLE_STOPS + " ON("
-				+ C.Db.TABLE_DIRECTIONS_STOPS + ".stop__tag=" + C.Db.TABLE_STOPS + ".tag)");
-		//String[] projectionIn = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TITLE };
+						+ C.Db.TABLE_DIRECTIONS_STOPS + ".stop__tag=" + C.Db.TABLE_STOPS + ".tag)");
+		// String[] projectionIn = new String[] { "Stops." + Stop.KEY_ID,
+		// "Stops." + Stop.KEY_TITLE };
 		String groupBy = null, having = null;
-		c = qb.query(db, columns, selection, selectionArguments, groupBy, having, sortOrder);
+		return qb.query(db, columns, selection, selectionArguments, groupBy, having, sortOrder);
 
-		return c;
 	}
 
+	@SuppressWarnings("unused")
 	private Cursor queryStopsForRoute(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
+					String sortOrder) {
 		return null;
 	}
 
 	private Cursor queryPaths(Uri uri, String[] columns, String selection, String[] selectionArguments, String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		Cursor c = null;
-		c = db.query(C.Db.TABLE_PATHS, columns, selection, selectionArguments, null, null, sortOrder, null);
-		return c;
+		return db.query(C.Db.TABLE_PATHS, columns, selection, selectionArguments, null, null, sortOrder, null);
+
 	}
 
 	private Cursor queryPoints(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
+					String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		Cursor c = null;
-		c = db.query(C.Db.TABLE_POINTS, columns, selection, selectionArguments, null, null, sortOrder, null);
-		return c;
+
+		return db.query(C.Db.TABLE_POINTS, columns, selection, selectionArguments, null, null, sortOrder, null);
 	}
 
 	private Cursor querySchedules(Uri uri, String[] columns, String selection, String[] selectionArguments,
-			String sortOrder) {
+					String sortOrder) {
 		SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
-		Cursor c = null;
-		c = db.query(C.Db.TABLE_SCHEDULES, columns, selection, selectionArguments, null, null, sortOrder, null);
-		return c;
+
+		return db.query(C.Db.TABLE_SCHEDULES, columns, selection, selectionArguments, null, null, sortOrder, null);
+
 	}
 
 	@Override

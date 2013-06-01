@@ -1,14 +1,17 @@
 package com.thuptencho.torontotransitbus;
 
 import android.net.Uri;
+import android.os.StrictMode;
 
 public class C {
-
+	
+	public static final boolean DEVELOPER_MODE = true;
 	public static final String AGENCY = "ttc";
+	public static final long CHOOSE_ONE = -99999;
 
 	public static final class Db {
 		public static final String DATABASE_NAME = "appdb.db";
-		public static final int DATABASE_VERSION = 3;
+		public static final int DATABASE_VERSION = 5;
 		public static final String TABLE_ROUTES = "routes";
 		public static final String TABLE_DIRECTIONS = "directions";
 		public static final String TABLE_STOPS = "stops";
@@ -48,6 +51,23 @@ public class C {
 			public static final String ROUTES_LIST_FRAGMENT = "com.dfjkldf.dfkldjflkdjf.dsflksdfoier";
 			public static final String ROUTE_DETAIL_FRAGMENT = "kasdfljkasdf.zxvlkasdfljksd.sdfkljsdf";
 		}
+	}
+	
+	public static void activateStrictDebug(){
+		if (DEVELOPER_MODE) {
+	         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+	                 .detectDiskReads()
+	                 .detectDiskWrites()
+	                 .detectNetwork()   // or .detectAll() for all detectable problems
+	                 .penaltyLog()
+	                 .build());
+	         /*StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+	                 .detectLeakedSqlLiteObjects()
+	                 .detectLeakedClosableObjects()
+	                 .penaltyLog()
+	                 .penaltyDeath()
+	                 .build());*/
+	     }
 	}
 
 }

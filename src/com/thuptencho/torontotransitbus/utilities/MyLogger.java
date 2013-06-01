@@ -1,9 +1,5 @@
 package com.thuptencho.torontotransitbus.utilities;
 
-import java.util.List;
-
-import com.thuptencho.torontotransitbus.models.Prediction;
-
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.util.Log;
@@ -21,6 +17,15 @@ public class MyLogger {
 		DatabaseUtils.dumpCursor(c, sb);
 		Log.println(priority, tag, c.getCount() + " records in following cursor");
 		Log.println(priority, tag, sb.toString());
+	}
+
+	public static void log(boolean status) {
+		Log.println(priority, tag, (status==true?"true":"false"));
+	}
+
+	public static void log(long selectedItemId) {
+		Log.println(priority, tag, ""+selectedItemId);
+		
 	}
 
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.content.AsyncQueryHandler;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -53,8 +54,6 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	private Button mBtnGo = null;
 
-	private Context context = null;
-
 	private TableRow resultRow = null;
 
 	private String mRouteTag = "";
@@ -71,7 +70,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
+		MyLogger.log("closing cursor");
 		try {
 			if (mStopsAdapter != null) {
 
@@ -100,14 +99,20 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 			}
 			else if (action.equals(C.Broadcast.DIRECTIONS_UPDATED_ACTION)) {
-				String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
+				final String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
 				String condition = "(" + Direction.KEY_ROUTE__TAG + "='" + mRouteTag + "')AND("
 								+ Direction.KEY_USEFORUI + "='true')";
-				Cursor c = getContentResolver().query(C.ContentUri.DIRECTION, projection, condition, null, null);
-				MatrixCursor chooseOne = new MatrixCursor(projection);
-				chooseOne.addRow(new Object[] { -999, "Choose Direction", "Choose Direction" });
-				Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, c });
-				mDirectionAdapter.swapCursor(newCursor);
+				AsyncQueryHandler handler = new AsyncQueryHandler(getContentResolver()) {
+					protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+						MatrixCursor chooseOne = new MatrixCursor(projection);
+						chooseOne.addRow(new Object[] { C.CHOOSE_ONE, "Choose Direction", "Choose Direction" });
+						Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, cursor });
+						mDirectionAdapter.swapCursor(newCursor);
+					};
+				};
+
+				handler.startQuery(3, null, C.ContentUri.DIRECTION, projection, condition, null, null);
+
 			}
 			else if (action.equals(C.Broadcast.D_STOPS_UPDATED_ACTION)) {
 
@@ -123,8 +128,9 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		MyLogger.log("oncreate");
-		super.onCreate(savedInstanceState);
+
+		C.activateStrictDebug();
+
 		setContentView(R.layout.activity_route_detail);
 		Intent i = getIntent();
 		mRouteTag = i.getStringExtra("routeTag");
@@ -144,6 +150,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		getSupportLoaderManager().initLoader(2, null, this);
 
 		setupView();
+		super.onCreate(savedInstanceState);
 
 	}
 
@@ -171,8 +178,6 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 		mStopsSpinner.setAdapter(mStopsAdapter);
 
-		mStopsSpinner.setEnabled(false);
-
 		mBtnGo = (Button) findViewById(R.id.btnSubmit);
 
 		mBtnGo.setOnClickListener(btnListener);
@@ -185,42 +190,57 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 	}
 
 	private OnItemSelectedListener listener = new OnItemSelectedListener() {
-
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			switch (parent.getId()) {
 			case R.id.spinnerDirections:
-				mStopsSpinner.setEnabled(true);
-				Cursor dCursor = getContentResolver().query(C.ContentUri.DIRECTION, new String[] { Direction.KEY_TAG },
-								"_id=" + id, null, null);
-
-				if (dCursor.getCount() > 0) {
-					dCursor.moveToFirst();
-					mDirectionTag = dCursor.getString(0);
+				MyLogger.log(parent.getSelectedItemId());
+				Spinner s = (Spinner) findViewById(R.id.spinnerStops);
+				if (parent.getSelectedItemId() == C.CHOOSE_ONE) {
+					s.setEnabled(false);
 				}
+				else {
+					s.setEnabled(true);
+				}
+				AsyncQueryHandler asyncQueryDirectionHandler = new AsyncQueryHandler(getContentResolver()) {
+					protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+						if (cursor.getCount() > 0) {
+							cursor.moveToFirst();
+							mDirectionTag = cursor.getString(0);
 
-				String[] projections = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG,
-								"Stops." + Stop.KEY_TITLE };
-				Cursor stopsCursor = getContentResolver().query(C.ContentUri.STOP, projections,
-								"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + mDirectionTag + "'", null, null);
-				MatrixCursor chooseOne = new MatrixCursor(new String[] { "_id", "tag", "title" });
-				chooseOne.addRow(new Object[] { -999, "Choose Stop", "Choose Stop" });
-				Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, stopsCursor });
-				mStopsAdapter.swapCursor(newCursor);
-				mStopsAdapter.notifyDataSetChanged();
+							String[] projections = new String[] { "Stops." + Stop.KEY_ID, "Stops." + Stop.KEY_TAG,
+											"Stops." + Stop.KEY_TITLE };
+							Cursor stopsCursor = getContentResolver().query(C.ContentUri.STOP, projections,
+											"Directions_Stops." + Stop.KEY_DIRECTION__TAG + "='" + mDirectionTag + "'",
+											null, null);
+							MatrixCursor chooseOne = new MatrixCursor(new String[] { "_id", "tag", "title" });
+							chooseOne.addRow(new Object[] { C.CHOOSE_ONE, "Choose Stop", "Choose Stop" });
+							Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, stopsCursor });
+							mStopsAdapter.swapCursor(newCursor);
+							mStopsAdapter.notifyDataSetChanged();
+						}
+					};
+				};
+				asyncQueryDirectionHandler.startQuery(-1, null, C.ContentUri.DIRECTION,
+								new String[] { Direction.KEY_TAG }, "_id=" + id, null, null);
 				break;
 			case R.id.spinnerStops:
-				Cursor stopCursor = getContentResolver().query(
-								C.ContentUri.STOP,
-								new String[] { C.Db.TABLE_STOPS + "." + Stop.KEY_TITLE,
-												C.Db.TABLE_STOPS + "." + Stop.KEY_TAG }, "Stops._id=" + id, null, null);
-				stopCursor.moveToFirst();
-				int columnIndex = stopCursor.getColumnIndex(Stop.KEY_TAG);
-				if (stopCursor.getCount() > 0) {
-					mStopTag = stopCursor.getString(columnIndex);
-				}
-				MyLogger.log("Stop Selected v");
-				MyLogger.log(stopCursor);
+				AsyncQueryHandler handler = new AsyncQueryHandler(getContentResolver()) {
+					@Override
+					protected void onQueryComplete(int token, Object cookie, Cursor stopCursor) {
+						stopCursor.moveToFirst();
+						int columnIndex = stopCursor.getColumnIndex(Stop.KEY_TAG);
+						if (stopCursor.getCount() > 0) {
+							mStopTag = stopCursor.getString(columnIndex);
+							stopCursor.close();
+						}
+					};
+				};
+
+				handler.startQuery(1, null, C.ContentUri.STOP, new String[] { C.Db.TABLE_STOPS + "." + Stop.KEY_TITLE,
+								C.Db.TABLE_STOPS + "." + Stop.KEY_TAG }, "Stops._id=" + id, null, null);
+				break;
+			default:
 				break;
 			}
 
@@ -245,7 +265,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 		case 2:
 			String[] projection = new String[] { Direction.KEY_ID, Direction.KEY_TITLE, Direction.KEY_NAME };
 			MatrixCursor chooseOne = new MatrixCursor(projection);
-			chooseOne.addRow(new Object[] { -999, "Choose Direction", "Choose Direction" });
+			chooseOne.addRow(new Object[] { C.CHOOSE_ONE, "Choose Direction", "Choose Direction" });
 			Cursor newCursor = new MergeCursor(new Cursor[] { chooseOne, cursor });
 			mDirectionAdapter.swapCursor(newCursor);
 			break;
