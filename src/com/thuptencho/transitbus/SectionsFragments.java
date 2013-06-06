@@ -20,7 +20,7 @@ public class SectionsFragments {
 			lf.setArguments(arguments);
 			return lf;
 		case 1:
-			SupportMapFragment dummyf = NearmeMapFragment.newInstance();
+			SupportMapFragment dummyf = new NearmeMapFragment();
 			dummyf.setArguments(arguments);
 			return dummyf;
 		case 2:
