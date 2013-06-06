@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.routes;
+package com.thuptencho.transitbus.routes;
 
 import android.content.Context;
 import android.database.Cursor;

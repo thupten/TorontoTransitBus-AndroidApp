@@ -1,6 +1,8 @@
-package com.thuptencho.torontotransitbus;
+package com.thuptencho.transitbus;
 
 import java.util.Locale;
+
+import com.thuptencho.transitbus.R;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;

@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.routes;
+package com.thuptencho.transitbus.routes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.thuptencho.torontotransitbus.R;
-import com.thuptencho.torontotransitbus.models.Route;
+import com.thuptencho.transitbus.R;
+import com.thuptencho.transitbus.models.Route;
 
 public class RoutesAdapter extends BaseAdapter {
 	private List<Route> routes = new ArrayList<Route>();

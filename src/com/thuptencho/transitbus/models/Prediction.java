@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.models;
+package com.thuptencho.transitbus.models;
 
 public class Prediction {
 	public String epochTime = "", seconds = "", minutes = "", isDeparture = "", affectedByLayover = "", branch = "",

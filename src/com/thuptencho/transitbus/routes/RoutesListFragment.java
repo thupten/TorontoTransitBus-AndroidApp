@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.routes;
+package com.thuptencho.transitbus.routes;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.thuptencho.torontotransitbus.C;
-import com.thuptencho.torontotransitbus.R;
-import com.thuptencho.torontotransitbus.models.Route;
-import com.thuptencho.torontotransitbus.utilities.MyLogger;
+import com.thuptencho.transitbus.R;
+import com.thuptencho.transitbus.C;
+import com.thuptencho.transitbus.models.Route;
+import com.thuptencho.transitbus.utilities.MyLogger;
 
 public class RoutesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	// private RoutesAdapter adapter;
@@ -91,7 +91,7 @@ public class RoutesListFragment extends ListFragment implements LoaderManager.Lo
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-
+		
 	}
 
 	@Override
@@ -111,6 +111,7 @@ public class RoutesListFragment extends ListFragment implements LoaderManager.Lo
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		//TODO if first item 1-s yonge is selected app will crash. fix that.
 		super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent(getActivity(), RouteDetailFragmentActivity.class);
 		Route r = (Route) getListAdapter().getItem(position);

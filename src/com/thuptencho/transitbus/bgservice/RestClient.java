@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.backgroundservice;
+package com.thuptencho.transitbus.bgservice;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,13 +14,13 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.thuptencho.torontotransitbus.models.Direction;
-import com.thuptencho.torontotransitbus.models.Pathz;
-import com.thuptencho.torontotransitbus.models.Pointz;
-import com.thuptencho.torontotransitbus.models.Prediction;
-import com.thuptencho.torontotransitbus.models.Route;
-import com.thuptencho.torontotransitbus.models.Stop;
-import com.thuptencho.torontotransitbus.utilities.MyLogger;
+import com.thuptencho.transitbus.models.Direction;
+import com.thuptencho.transitbus.models.Pathz;
+import com.thuptencho.transitbus.models.Pointz;
+import com.thuptencho.transitbus.models.Prediction;
+import com.thuptencho.transitbus.models.Route;
+import com.thuptencho.transitbus.models.Stop;
+import com.thuptencho.transitbus.utilities.MyLogger;
 
 public class RestClient {
 	private static final String REST_URL_BASE = "http://webservices.nextbus.com/service/publicXMLFeed?a=ttc";

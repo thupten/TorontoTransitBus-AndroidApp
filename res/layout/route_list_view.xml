@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_weight="1"
         android:padding="10dp"
-        android:textIsSelectable="false"
+        android:textIsSelectable="false" 
         android:textSize="@dimen/defaultTextSize" >
     </TextView>
 </LinearLayout>

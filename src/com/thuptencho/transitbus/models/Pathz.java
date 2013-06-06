@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.models;
+package com.thuptencho.transitbus.models;
 
 import java.util.ArrayList;
 import java.util.List;

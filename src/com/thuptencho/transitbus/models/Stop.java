@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.models;
+package com.thuptencho.transitbus.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

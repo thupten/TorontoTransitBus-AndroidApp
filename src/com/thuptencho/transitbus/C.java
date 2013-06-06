@@ -1,11 +1,11 @@
-package com.thuptencho.torontotransitbus;
+package com.thuptencho.transitbus;
 
 import android.net.Uri;
 import android.os.StrictMode;
 
 public class C {
 	
-	public static final boolean DEVELOPER_MODE = true;
+	public static final boolean DEVELOPER_MODE = false;
 	public static final String AGENCY = "ttc";
 	public static final long CHOOSE_ONE = -99999;
 

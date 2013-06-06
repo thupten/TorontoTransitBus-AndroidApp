@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.backgroundservice;
+package com.thuptencho.transitbus.bgservice;
 
 import java.io.IOException;
 import java.sql.SQLDataException;
@@ -18,13 +18,13 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.thuptencho.torontotransitbus.C;
-import com.thuptencho.torontotransitbus.models.Direction;
-import com.thuptencho.torontotransitbus.models.Pathz;
-import com.thuptencho.torontotransitbus.models.Pointz;
-import com.thuptencho.torontotransitbus.models.Route;
-import com.thuptencho.torontotransitbus.models.Stop;
-import com.thuptencho.torontotransitbus.provider.MySQLiteOpenHelper;
+import com.thuptencho.transitbus.C;
+import com.thuptencho.transitbus.models.Direction;
+import com.thuptencho.transitbus.models.Pathz;
+import com.thuptencho.transitbus.models.Pointz;
+import com.thuptencho.transitbus.models.Route;
+import com.thuptencho.transitbus.models.Stop;
+import com.thuptencho.transitbus.provider.MySQLiteOpenHelper;
 
 /*Used by Content Providers*/
 public class DatabaseUpdatingService extends IntentService {

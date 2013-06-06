@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.provider;
+package com.thuptencho.transitbus.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import com.thuptencho.torontotransitbus.C;
-import com.thuptencho.torontotransitbus.backgroundservice.DatabaseUpdatingService;
-import com.thuptencho.torontotransitbus.backgroundservice.ServiceHelper;
+import com.thuptencho.transitbus.C;
+import com.thuptencho.transitbus.bgservice.DatabaseUpdatingService;
+import com.thuptencho.transitbus.bgservice.ServiceHelper;
 
 /**
  * Created by thupten on 5/20/13.

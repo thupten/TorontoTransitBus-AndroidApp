@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.backgroundservice;
+package com.thuptencho.transitbus.bgservice;
 
 import android.content.Context;
 import android.content.Intent;

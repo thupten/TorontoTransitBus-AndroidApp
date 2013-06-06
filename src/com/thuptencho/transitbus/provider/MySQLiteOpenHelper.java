@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.provider;
+package com.thuptencho.transitbus.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

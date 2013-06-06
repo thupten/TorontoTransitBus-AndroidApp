@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry excluding="com/thuptencho/torontotransitbus/routes/RouteDetailFragment.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar" sourcepath="C:/Users/thupten/adt-bundle-custom-indigo/sdk/extras/android/support/v4/src">
 		<attributes>
-			<attribute name="javadoc_location" value="http://developer.android.com/reference/android/support/v4/app/package-summary.html"/>
+			<attribute name="javadoc_location" value="file:/C:/Users/thupten/adt-bundle-custom-indigo/sdk/docs/reference/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

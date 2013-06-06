@@ -1,11 +1,13 @@
-package com.thuptencho.torontotransitbus;
+package com.thuptencho.transitbus;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 
-import com.thuptencho.torontotransitbus.MainActivity.DummySectionFragment;
-import com.thuptencho.torontotransitbus.routes.RoutesListFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.thuptencho.transitbus.MainActivity.DummySectionFragment;
+import com.thuptencho.transitbus.nearme.NearmeMapFragment;
+import com.thuptencho.transitbus.routes.RoutesListFragment;
 
 public class SectionsFragments {
 	public static final String ARG_SECTION_NUMBER = "section_number";
@@ -18,7 +20,7 @@ public class SectionsFragments {
 			lf.setArguments(arguments);
 			return lf;
 		case 1:
-			DummySectionFragment dummyf = new DummySectionFragment();
+			SupportMapFragment dummyf = NearmeMapFragment.newInstance();
 			dummyf.setArguments(arguments);
 			return dummyf;
 		case 2:

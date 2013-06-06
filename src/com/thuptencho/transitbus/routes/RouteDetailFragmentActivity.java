@@ -1,4 +1,4 @@
-package com.thuptencho.torontotransitbus.routes;
+package com.thuptencho.transitbus.routes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,13 +37,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.thuptencho.torontotransitbus.C;
-import com.thuptencho.torontotransitbus.R;
-import com.thuptencho.torontotransitbus.backgroundservice.RestClient;
-import com.thuptencho.torontotransitbus.models.Direction;
-import com.thuptencho.torontotransitbus.models.Prediction;
-import com.thuptencho.torontotransitbus.models.Stop;
-import com.thuptencho.torontotransitbus.utilities.MyLogger;
+import com.thuptencho.transitbus.R;
+import com.thuptencho.transitbus.C;
+import com.thuptencho.transitbus.bgservice.RestClient;
+import com.thuptencho.transitbus.models.Direction;
+import com.thuptencho.transitbus.models.Prediction;
+import com.thuptencho.transitbus.models.Stop;
+import com.thuptencho.transitbus.utilities.MyLogger;
 
 public class RouteDetailFragmentActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private TextView mTVTitle = null;
@@ -128,9 +128,6 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		C.activateStrictDebug();
-
 		setContentView(R.layout.activity_route_detail);
 		Intent i = getIntent();
 		mRouteTag = i.getStringExtra("routeTag");
@@ -307,7 +304,7 @@ public class RouteDetailFragmentActivity extends FragmentActivity implements Loa
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		// TODO Auto-generated method stub
-
+		mDirectionAdapter.swapCursor(null);
 	}
 
 	android.view.View.OnClickListener btnListener = new android.view.View.OnClickListener() {
